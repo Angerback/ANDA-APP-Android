@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.matias.anda.MainActivity;
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.utilities.JsonHandler;
@@ -87,10 +88,7 @@ public class Login extends Fragment implements  View.OnClickListener {
                         }
                     }).execute(URL_POST, jsonobject);
 
-                        if(checkBox.isChecked())
-                            rememberMe(et_nickname.getText().toString(), et_password.getText().toString());
                         getActivity().getFragmentManager().popBackStack();
-
 
                     }
                     else{
@@ -111,11 +109,6 @@ public class Login extends Fragment implements  View.OnClickListener {
 
     }
 
-    private void rememberMe(String user, String pass) {
-
-
-
-    }
 
     private boolean validate() {
         if(et_nickname.getText().toString().trim().equals("") ||

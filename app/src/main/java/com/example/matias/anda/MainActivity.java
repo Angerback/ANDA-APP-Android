@@ -1,6 +1,7 @@
 package com.example.matias.anda;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static String PREF_PASSWORD = "password";
     FragmentTransaction transaction;
 
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,21 +30,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        getUser();
-    }
-
-    private void getUser() {
-        SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
-        String username = pref.getString(PREF_USERNAME, null);
-        String password = pref.getString(PREF_PASSWORD,null);
-
-        if(username != null || password != null){
-
-        }
-    }
 
 
     /**

@@ -50,6 +50,7 @@ public class MainFragment extends Fragment implements  View.OnClickListener {
         super.onPause();
     }// onPause()
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
