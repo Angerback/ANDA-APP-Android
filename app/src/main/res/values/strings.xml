@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ANDA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="exit">Salir</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellido</string>
+    <string name="nickname">NickName</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="Registrarse">Registrarse</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
