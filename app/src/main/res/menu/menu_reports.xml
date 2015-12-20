@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_reports_myreports"
+        android:title="@string/myrepots"/>
+    <item
+        android:id="@+id/menu_reports_newreport"
+        android:title="@string/newreport"/>
+    <item
+        android:id="@+id/menu_reports_logout"
+        android:title="@string/cerrarsesion"/>
+    <item
+        android:id="@+id/menu_reports_salir"
+        android:title="@string/exit"/>
+</menu>

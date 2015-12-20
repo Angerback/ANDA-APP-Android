@@ -13,4 +13,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="newreport">Nuevo Reporte</string>
+    <string name="myrepots">Mis Reportes</string>
+    <string name="cerrarsesion">Cerrar Sesión</string>
 </resources>

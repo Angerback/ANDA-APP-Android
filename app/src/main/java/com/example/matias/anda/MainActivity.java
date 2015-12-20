@@ -2,6 +2,7 @@ package com.example.matias.anda;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +16,13 @@ import com.example.matias.anda.views.MainFragment;
 public class MainActivity extends AppCompatActivity {
 
 
+    public static Integer flag = 1;
     public static String PREFS_NAME = "mypre";
     public static String PREF_USERNAME = "username";
     public static String PREF_PASSWORD = "password";
     FragmentTransaction transaction;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,16 @@ public class MainActivity extends AppCompatActivity {
         transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_container, new MainFragment());
         transaction.commit();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(flag ==1){
+            Intent intent = new Intent(MainActivity.this, Reports.class);
+            MainActivity.this.startActivity(intent);
+        }
+
     }
 
 
