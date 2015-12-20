@@ -114,6 +114,7 @@ public class Login extends Fragment implements  View.OnClickListener {
     private void rememberMe(String user, String pass) {
 
 
+
     }
 
     private boolean validate() {
