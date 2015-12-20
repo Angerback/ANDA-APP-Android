@@ -2,13 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="500dp"
-    tools:context="com.example.matias.anda.views.MyReports">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    tools:context="com.example.matias.anda.views.MyReports"
+    android:background="#c7e2f0">
 
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="mis reportes"
-        android:background="#eaf7e0" />
-
+        android:layout_width="205dp"
+        android:layout_height="186dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="AQUI VA UNA LISTA DE MIS REPORTES, CORRESPONDE A LA US 004"
+        android:id="@+id/textView6"
+        android:layout_gravity="center" />
 </FrameLayout>

@@ -15,8 +15,9 @@ import com.example.matias.anda.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements  View.OnClickListener {
+public class MainFragment extends Fragment implements  View.OnClickListener  {
 
+    Integer flag = 0;
     FragmentTransaction transaction;
     private  BroadcastReceiver br = null;
     Button iniciar_sesion;

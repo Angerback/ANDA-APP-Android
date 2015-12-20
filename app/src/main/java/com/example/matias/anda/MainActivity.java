@@ -1,22 +1,17 @@
 package com.example.matias.anda;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
 import com.example.matias.anda.views.MainFragment;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    public static Integer flag = 1;
+
     public static String PREFS_NAME = "mypre";
     public static String PREF_USERNAME = "username";
     public static String PREF_PASSWORD = "password";
@@ -31,17 +26,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.add(R.id.fragment_container, new MainFragment());
         transaction.commit();
     }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        if(flag ==1){
-            Intent intent = new Intent(MainActivity.this, Reports.class);
-            MainActivity.this.startActivity(intent);
-        }
-
-    }
-
+    
 
 
     /**
@@ -78,4 +63,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }// onOptionsItemSelected(MenuItem item)
+
+
 }

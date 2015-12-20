@@ -5,33 +5,30 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.matias.anda.MainActivity;
 import com.example.matias.anda.R;
+import com.example.matias.anda.Reports;
 import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
 
-import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Login extends Fragment implements  View.OnClickListener {
 
-    String Key;
+
+
     Context context;
-    private BroadcastReceiver br = null;
     String jsonobject;
     private final String URL_POST =
             "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/login";
@@ -43,6 +40,7 @@ public class Login extends Fragment implements  View.OnClickListener {
     public Login() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -79,18 +77,21 @@ public class Login extends Fragment implements  View.OnClickListener {
                 if(validate()){
                     /** Chequear conexion a internet */
                     if(su.isNetworkAvailable()){
+
+                        final Intent intent = new Intent(getActivity().getBaseContext(),
+                                Reports.class);
+
                         new HttpPost(getActivity().getApplicationContext(),
                                 new HttpPost.AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             System.out.println("Estoy en el Login: " + output + "\n");
-                            Key = output;
-                        }
-                    }).execute(URL_POST, jsonobject);
-
-                        getActivity().getFragmentManager().popBackStack();
-
+                            String key = output;
+                            intent.putExtra("auth_key",key);
+                            getActivity().startActivity(intent);
+                        }}).execute(URL_POST, jsonobject);
                     }
+
                     else{
                         Toast toast = Toast.makeText(this.context,"NO HAY CONEXION A INTERNET",
                                 Toast.LENGTH_LONG);
@@ -117,4 +118,9 @@ public class Login extends Fragment implements  View.OnClickListener {
         else
             return true;
     }
+
+
+
+
+
 }
