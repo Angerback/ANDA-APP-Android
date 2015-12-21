@@ -68,6 +68,9 @@ public class Login extends Fragment implements  View.OnClickListener {
 
         switch (v.getId()){
             case R.id.btn_login_iniciarsesion:
+                // Intent para ir a la actividad reportes una vez el login sea satisfactorio
+                final Intent intent = new Intent(getActivity().getBaseContext(),
+                        Reports.class);
                 JsonHandler jsonHandler = new JsonHandler();
                 jsonobject = jsonHandler.getLogin(et_nickname.getText().toString(),
                         et_password.getText().toString());
@@ -77,9 +80,6 @@ public class Login extends Fragment implements  View.OnClickListener {
                 if(validate()){
                     /** Chequear conexion a internet */
                     if(su.isNetworkAvailable()){
-
-                        final Intent intent = new Intent(getActivity().getBaseContext(),
-                                Reports.class);
 
                         new HttpPost(getActivity().getApplicationContext(),
                                 new HttpPost.AsyncResponse() {

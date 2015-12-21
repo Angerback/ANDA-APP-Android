@@ -2,15 +2,19 @@ package com.example.matias.anda.views;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.matias.anda.R;
+import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.utilities.JsonHandler;
+import com.example.matias.anda.utilities.SystemUtilities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,10 +26,13 @@ import java.net.URL;
  */
 public class NewReport extends Fragment implements View.OnClickListener  {
 
+    String id;
+    Context context;
     String URL_POST = "";
     Button btn_ok;
     EditText et_contenido;
     EditText et_foto;
+    String jsonobject;
 
     public NewReport() {
         // Required empty public constructor
@@ -53,7 +60,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
 
         JsonHandler jh = new JsonHandler();
-        String id = jh.getValor(key,"idUsuario");
+        id = jh.getValor(key,"idUsuario");
         String auth_token = jh.getValor(key,"auth_token");
         URL_POST = URL_POST.concat(URL).concat(id).concat("/").concat("reportes");
         System.out.println(URL_POST);
@@ -70,8 +77,47 @@ public class NewReport extends Fragment implements View.OnClickListener  {
     public void onClick(View v) {
         switch (getId()){
             case R.id.btn_ok_newreport:
-                System.out.println("POST\n");
+                JsonHandler jsonHandler = new JsonHandler();
+                jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
+                        et_foto.getText().toString(),id);
+                SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
+
+                if (validate()){
+                    if(su.isNetworkAvailable()){
+                        new HttpPost(getActivity().getApplicationContext(),
+                                new HttpPost.AsyncResponse(){
+
+                            @Override
+                            public void processFinish(String output) {
+                                System.out.println("salida new Report:"+ output + "\n");
+                                getActivity().getFragmentManager().popBackStack();
+                            }
+                        }).execute(URL_POST,jsonobject);
+                    }//network-available
+                    else{
+                        Toast toast = Toast.makeText(this.context,"NO HAY CONEXION A INTERNET",
+                                Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+
+
+                } //if-validate
+                else{
+                    Toast toast = Toast.makeText(this.context, "Ingrese los datos",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
                 break;
         }
+    }// onClick
+
+    private boolean validate() {
+
+        if(et_contenido.getText().toString().trim().equals("") ||
+                et_foto.getText().toString().trim().equals(""))
+            return false;
+        else
+            return true;
     }
 }
