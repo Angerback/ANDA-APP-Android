@@ -8,13 +8,14 @@ import org.json.JSONObject;
  */
 public class JsonHandler {
 
-    String resultado;
+
 
     public  String getRegistro(String nombre, String apellido,
                                String username, String email,
                                String contraseña){
 
         try{
+            String resultado;
             JSONObject json = new JSONObject();
             json.put("nombreUsuario", nombre);
             json.put("apellidoUsuario", apellido);
@@ -25,26 +26,41 @@ public class JsonHandler {
             json.put("validacion",0 );
             json.put("curador", 0);
             resultado = json.toString();
-
-
-
+            return resultado;
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+            return null;
 
-        return resultado;
     }
 
     public  String getLogin(String nickname, String password){
         try{
+            String resultado;
             JSONObject json = new JSONObject();
             json.put("username",nickname);
             json.put("password",password);
             resultado = json.toString();
+            return resultado;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return  resultado;
+        return  null;
+
+
+    }
+
+    public String getValor(String json, String name) {
+
+        String resultado;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            resultado = jsonObject.get(name).toString();
+            return resultado;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

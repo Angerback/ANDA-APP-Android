@@ -1,20 +1,18 @@
 package com.example.matias.anda;
-
-
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.example.matias.anda.views.Login;
 import com.example.matias.anda.views.MyReports;
 import com.example.matias.anda.views.NewReport;
 import com.example.matias.anda.views.ViewReports;
 
 public class Reports extends AppCompatActivity {
 
+
+    String token;
     FragmentTransaction transaction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,8 @@ public class Reports extends AppCompatActivity {
         super.onStart();
         // Obtener los datos enviados desde el login.
         Intent intent = getIntent();
-        String auth_key = intent.getStringExtra("auth_key");
-        System.out.println("auth_key: " + auth_key + "\n");
+         token = intent.getStringExtra("auth_key");
+        System.out.println("auth_key: " + token + "\n");
     }
 
     /**
@@ -64,9 +62,14 @@ public class Reports extends AppCompatActivity {
                 transaction.commit();
                 break;
             case R.id.menu_reports_newreport:
+                Bundle bundle = new Bundle();
+                bundle.putString("key",token);
+
                 //Llamar al fragmento
                 transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.reports_container, new NewReport());
+                NewReport newReport = new NewReport();
+                newReport.setArguments(bundle);
+                transaction.replace(R.id.reports_container,newReport);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
