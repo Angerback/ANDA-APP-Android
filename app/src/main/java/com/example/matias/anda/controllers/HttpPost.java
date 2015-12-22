@@ -41,31 +41,39 @@ public class HttpPost extends AsyncTask<String,Void,String>{
 
             URL url = new URL(params[0]);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setReadTimeout(100000);
+            connection.setConnectTimeout(100000);
 
             if(params[2] != "False"){
-                System.out.println("params2 es: " + params[2] + "\n");
-                String auth = "auth_token"+":"+params[2];
-                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAA:   "+auth);
-                byte[] encodeBtyes = Base64.encode(auth.getBytes(),0);
-                auth = "Basic " + encodeBtyes;
-                System.out.println("OKOKOKOKOK:   "+auth);
-                connection.setRequestProperty("Authorization", auth);
+                // Si los parametros vienen con un header.
+                //FORMA 1//connection.setRequestProperty("Authorization", "auth_token:" + params[2]);
+
+
+                //FORMA 2
+/*               String userCredentials  = "auth_token:"+params[2];
+                byte[] encodedBytes = Base64.encode(userCredentials.getBytes(),0);
+                userCredentials = "Basic " + encodedBytes;
+                connection.setRequestProperty("Authorization",userCredentials);*/
+
+                //FORMA 3
+                 connection.setRequestProperty("auth_token",params[2]);
+                // token
+                System.out.println(params[2]);
+                // json
+                System.out.println(params[1]);
+
             }
 
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setReadTimeout(100000);
-            connection.setConnectTimeout(100000);
             connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
 
-            System.out.println("LLEGA AQUI LA WEA???????????");
 
             // Send request
             DataOutputStream os = new DataOutputStream(
                     connection.getOutputStream());
-            System.out.println("CAGOOOO XDDD ");
             // Params[1] contiene el objeto json
             os.writeBytes(params[1]);
             os.flush();

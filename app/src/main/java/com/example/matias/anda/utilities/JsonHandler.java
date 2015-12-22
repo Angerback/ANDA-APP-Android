@@ -69,6 +69,8 @@ public class JsonHandler {
 
     public String getNewReport(String contenido, String foto, String id){
         String resultado;
+
+        // Formatear la fecha
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(c.getTime());
@@ -78,7 +80,8 @@ public class JsonHandler {
             json.put("contenido",contenido);
             json.put("fecha",formattedDate);
             json.put("foto",foto);
-            json.put("geo","geo");
+            json.put("latitud","33.88173");
+            json.put("longitud","113.43054");
             json.put("idFacultad","204");
             json.put("idUsuario",id);
             json.put("solucionado","0");
