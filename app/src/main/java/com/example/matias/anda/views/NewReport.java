@@ -52,7 +52,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
     public void onResume() {
         super.onResume();
 
-        String URL= "http://dns.net:8080/taller-bd-11/usuarios/";
+        String URL= "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/";
 
 
         // Obtener el key enviado desde la clase Reports
