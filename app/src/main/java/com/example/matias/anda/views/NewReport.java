@@ -30,6 +30,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
     Context context;
     String URL_POST = "";
     Button btn_ok;
+    String auth_token;
     EditText et_contenido;
     EditText et_foto;
     String jsonobject;
@@ -61,11 +62,11 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
         JsonHandler jh = new JsonHandler();
         id = jh.getValor(key,"idUsuario");
-        String auth_token = jh.getValor(key,"auth_token");
+        auth_token = jh.getValor(key,"auth_token");
         URL_POST = URL_POST.concat(URL).concat(id).concat("/").concat("reportes");
         System.out.println(URL_POST);
         System.out.println("auth_token es: "+auth_token);
-        System.out.println("OK\n");
+
 
         et_contenido = (EditText)getView().findViewById(R.id.contenido_newreport);
         et_foto = (EditText)getView().findViewById(R.id.foto_newreport);
@@ -75,7 +76,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
     @Override
     public void onClick(View v) {
-        switch (getId()){
+        switch (v.getId()){
             case R.id.btn_ok_newreport:
                 JsonHandler jsonHandler = new JsonHandler();
                 jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
@@ -92,7 +93,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
                                 System.out.println("salida new Report:"+ output + "\n");
                                 getActivity().getFragmentManager().popBackStack();
                             }
-                        }).execute(URL_POST,jsonobject);
+                        }).execute(URL_POST,jsonobject,auth_token);
                     }//network-available
                     else{
                         Toast toast = Toast.makeText(this.context,"NO HAY CONEXION A INTERNET",

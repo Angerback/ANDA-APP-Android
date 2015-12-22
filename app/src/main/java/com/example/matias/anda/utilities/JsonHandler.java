@@ -79,7 +79,7 @@ public class JsonHandler {
             json.put("fecha",formattedDate);
             json.put("foto",foto);
             json.put("geo","geo");
-            json.put("idFacultadad","200");
+            json.put("idFacultad","204");
             json.put("idUsuario",id);
             json.put("solucionado","0");
             json.put("validado","0");

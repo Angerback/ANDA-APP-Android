@@ -89,11 +89,9 @@ public class Register extends Fragment implements  View.OnClickListener {
 
                                 System.out.println("Estoy en el Register: " + output + "\n");
                                 getActivity().getFragmentManager().popBackStack();
-                                ((InputMethodManager) getActivity().getSystemService
-                                        (Activity.INPUT_METHOD_SERVICE)).toggleSoftInput(
-                                        InputMethodManager.SHOW_IMPLICIT, 0);
+
                             }
-                        }).execute(URL_POST, jsonobject);
+                        }).execute(URL_POST, jsonobject,"False");
                     }
 
                     else{

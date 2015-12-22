@@ -2,6 +2,7 @@ package com.example.matias.anda.controllers;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -37,24 +38,40 @@ public class HttpPost extends AsyncTask<String,Void,String>{
     protected String doInBackground(String... params) {
 
         try {
+
             URL url = new URL(params[0]);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+
+            if(params[2] != "False"){
+                System.out.println("params2 es: " + params[2] + "\n");
+                String auth = "auth_token"+":"+params[2];
+                System.out.println("ACAAAAAAAAAAAAAAAAAAAAAA:   "+auth);
+                byte[] encodeBtyes = Base64.encode(auth.getBytes(),0);
+                auth = "Basic " + encodeBtyes;
+                System.out.println("OKOKOKOKOK:   "+auth);
+                connection.setRequestProperty("Authorization", auth);
+            }
+
+            connection.setRequestProperty("Content-Type", "application/json");
             connection.setReadTimeout(100000);
             connection.setConnectTimeout(100000);
-            connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoInput(true);
             connection.setUseCaches(false);
 
+            System.out.println("LLEGA AQUI LA WEA???????????");
+
             // Send request
             DataOutputStream os = new DataOutputStream(
                     connection.getOutputStream());
+            System.out.println("CAGOOOO XDDD ");
             // Params[1] contiene el objeto json
             os.writeBytes(params[1]);
             os.flush();
             os.close();
 
+            System.out.println("GG");
             int status = connection.getResponseCode();
             if(status >= 400)
                 return "error_responsive";
