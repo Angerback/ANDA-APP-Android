@@ -15,7 +15,8 @@ import java.util.Map;
  */
 public class UploadCouldinary extends AsyncTask<String,Void,String> {
 
-    Map Result;
+    Map<String,String> Result;
+    String resultado;
     private Context context;
     Cloudinary cloudinary;
     public  AsyncResponse delegate = null;
@@ -47,12 +48,14 @@ public class UploadCouldinary extends AsyncTask<String,Void,String> {
 
         try {
             Result =   cloudinary.uploader().upload(params[0], new HashMap());
+             resultado = Result.get("url");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
-        return Result.toString();
+        return resultado;
     }
 
 
