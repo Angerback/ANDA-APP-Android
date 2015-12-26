@@ -1,7 +1,24 @@
 <resources>
     <string name="app_name">ANDA</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!--String pertenecientes a fragment main-->
+    <string name="imagen_inicio">imagen inicio</string>
+    <string name="bienvenido_text">BIENVENIDO</string>
+    <string name="btn_registrarse">REGISTRARSE</string>
+
+    <!--String pertenecientes a fragment register-->
+    <string name="registro_text">REGISTRO</string>
+
+    <!--String pertenecientes a fragment login-->
+    <string name="text_login">Inicio Sesión</string>
+    <string name="NickName_text">NickName</string>
+    <string name="pass_text">Contraseña</string>
+    <string name="recordarme_text">Recordarme</string>
+    <string name="login_boton_text">Iniciar Sesión</string>
+    <string name="entra_sesion">Entrar</string>
+
+
+
     <string name="exit">Salir</string>
     <string name="logout">Cerrar Sesión</string>
     <string name="name">Nombre</string>
@@ -11,9 +28,10 @@
     <string name="password">Contraseña</string>
     <string name="Registrarse">Registrarse</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
     <string name="newreport">Nuevo Reporte</string>
     <string name="myrepots">Mis Reportes</string>
     <string name="cerrarsesion">Cerrar Sesión</string>
+
 </resources>

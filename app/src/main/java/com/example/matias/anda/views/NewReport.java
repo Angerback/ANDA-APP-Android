@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import android.app.ProgressDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +35,7 @@ import java.util.Map;
 
 public class NewReport extends Fragment implements View.OnClickListener  {
 
+    private ProgressDialog pDialog;
     private  Context context;
     static final int CAM_REQUEST = 1;
     String id;
@@ -102,6 +104,11 @@ public class NewReport extends Fragment implements View.OnClickListener  {
                 SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
 
                 if (validate()){
+                    pDialog = new ProgressDialog(getActivity());
+                    pDialog.setMessage("Cargando nuevo reporte...");
+                    pDialog.setIndeterminate(false);
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     if(su.isNetworkAvailable()){
                         new HttpPost(getActivity().getApplicationContext(),
                                 new HttpPost.AsyncResponse(){
@@ -110,6 +117,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
                             public void processFinish(String output) {
                                 System.out.println("salida new Report:"+ output + "\n");
                                 getActivity().getFragmentManager().popBackStack();
+                                pDialog.dismiss();
                             }
                         }).execute(URL_POST,jsonobject,auth_token);
                     }//network-available

@@ -20,6 +20,7 @@ public class Reports extends AppCompatActivity {
         setContentView(R.layout.activity_reports);
         transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.reports_container, new ViewReports());
+        transaction.addToBackStack("irViewReports");
         transaction.commit();
 
 
@@ -89,7 +90,7 @@ public class Reports extends AppCompatActivity {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             this.finish();
         } else {
-            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStack("irViewReports",0);
         }
     }// onBackPressed()
 }
