@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -21,10 +22,19 @@ import android.widget.Toast;
 import com.cloudinary.Cloudinary;
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpPost;
+import com.example.matias.anda.controllers.UploadCouldinary;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import android.app.ProgressDialog;
@@ -49,6 +59,8 @@ public class NewReport extends Fragment implements View.OnClickListener  {
     ImageView foto;
     Integer flag = 1;
     String URL= "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/";
+    String resultado = "null";
+
 
 
     /** Constructor */
@@ -84,7 +96,6 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
 
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
-            et_foto = (EditText) getView().findViewById(R.id.foto_newreport);
             btn_capture = (Button) getView().findViewById(R.id.btn_capture);
             btn_ok = (Button) getView().findViewById(R.id.btn_ok_newreport);
             foto = (ImageView) getView().findViewById(R.id.iv_foto);
@@ -100,7 +111,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
             case R.id.btn_ok_newreport:
                 JsonHandler jsonHandler = new JsonHandler();
                 jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
-                        et_foto.getText().toString(),id);
+                       resultado,id);
                 SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
 
                 if (validate()){
@@ -133,7 +144,6 @@ public class NewReport extends Fragment implements View.OnClickListener  {
                             Toast.LENGTH_LONG);
                     toast.show();
                 }
-
                 break;
             case R.id.btn_capture:
 
@@ -146,8 +156,7 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
     private boolean validate() {
 
-        if(et_contenido.getText().toString().trim().equals("") ||
-                et_foto.getText().toString().trim().equals(""))
+        if(et_contenido.getText().toString().trim().equals(""))
             return false;
         else
             return true;
@@ -155,28 +164,28 @@ public class NewReport extends Fragment implements View.OnClickListener  {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == Activity.RESULT_OK){
             if (requestCode == CAM_REQUEST) {
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 foto.setImageBitmap(cameraImage);
-                Uri temUri = getImageUri(getActivity().getApplicationContext(),cameraImage);
-                File finaleFile = new File(getRealPathFromURI(temUri,getActivity().getApplicationContext()));
-                System.out.println("RUTA ABSOLUTA"+finaleFile);
+                Uri temUri = getImageUri(getActivity().getApplicationContext(), cameraImage);
+                File finaleFile = new File(getRealPathFromURI(temUri, getActivity().getApplicationContext()));
+                System.out.println("RUTA ABSOLUTA" + finaleFile);
 
-                Map config = new HashMap();
-                config.put("cloud_name", "anda");
-                config.put("api_key", "699621158764738");
-                config.put("api_secret", "s5uLsD8AqE_dAgJNcY7zYkVAT80");
-                Cloudinary cloudinary = new Cloudinary(config);
-/*                try {
-                    cloudinary.uploader().upload(finaleFile, new HashMap());
+                new UploadCouldinary(getActivity().getApplicationContext(),
+                        new UploadCouldinary.AsyncResponse(){
+                            @Override
+                            public void processFinish(String output) {
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+                                resultado = output;
+                                System.out.println(resultado);
+
+                            }
+                        }).execute(finaleFile.toString());
+
             }
 
         }
@@ -199,4 +208,8 @@ public class NewReport extends Fragment implements View.OnClickListener  {
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }// Enf getRealPathFromURI
+
+
+
 }
+
