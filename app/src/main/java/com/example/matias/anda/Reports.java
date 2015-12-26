@@ -30,8 +30,8 @@ public class Reports extends AppCompatActivity {
         super.onStart();
         // Obtener los datos enviados desde el login.
         Intent intent = getIntent();
-         token = intent.getStringExtra("auth_key");
-        System.out.println("auth_key: " + token + "\n");
+        token = intent.getStringExtra("auth_key");
+
     }
 
     /**
@@ -51,6 +51,7 @@ public class Reports extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_reports_salir:
+                new Intent(Intent.ACTION_MAIN);
                 finish();
                 System.exit(0);
                 break;
@@ -67,7 +68,7 @@ public class Reports extends AppCompatActivity {
 
                 //Llamar al fragmento
                 transaction = getFragmentManager().beginTransaction();
-                NewReport newReport = new NewReport();
+                NewReport newReport = new NewReport(getApplicationContext());
                 newReport.setArguments(bundle);
                 transaction.replace(R.id.reports_container,newReport);
                 transaction.addToBackStack(null);

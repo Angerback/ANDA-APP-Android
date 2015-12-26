@@ -86,8 +86,8 @@ public class Login extends Fragment implements  View.OnClickListener {
                         @Override
                         public void processFinish(String output) {
                             System.out.println("Estoy en el Login: " + output + "\n");
-                            String key = output;
-                            intent.putExtra("auth_key",key);
+
+                            intent.putExtra("auth_key",output);
                             getActivity().startActivity(intent);
                         }}).execute(URL_POST, jsonobject,"False");
                     }

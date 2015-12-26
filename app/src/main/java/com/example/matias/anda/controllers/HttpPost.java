@@ -45,18 +45,8 @@ public class HttpPost extends AsyncTask<String,Void,String>{
             connection.setConnectTimeout(100000);
 
             if(params[2] != "False"){
-                // Si los parametros vienen con un header.
-                //FORMA 1//connection.setRequestProperty("Authorization", "auth_token:" + params[2]);
-
-
-                //FORMA 2
-/*               String userCredentials  = "auth_token:"+params[2];
-                byte[] encodedBytes = Base64.encode(userCredentials.getBytes(),0);
-                userCredentials = "Basic " + encodedBytes;
-                connection.setRequestProperty("Authorization",userCredentials);*/
-
-                //FORMA 3
-                 connection.setRequestProperty("auth_token",params[2]);
+                // Si la request va con header
+                connection.setRequestProperty("auth_token",params[2]);
                 // token
                 System.out.println(params[2]);
                 // json
@@ -79,7 +69,7 @@ public class HttpPost extends AsyncTask<String,Void,String>{
             os.flush();
             os.close();
 
-            System.out.println("GG");
+
             int status = connection.getResponseCode();
             if(status >= 400)
                 return "error_responsive";
