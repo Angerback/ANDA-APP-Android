@@ -52,9 +52,12 @@ public class Reports extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_reports_salir:
-                new Intent(Intent.ACTION_MAIN);
+                Intent salir = new Intent(this, MainActivity.class);
+                salir.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                salir.putExtra("Exit me", true);
+                startActivity(salir);
                 finish();
-                System.exit(0);
+
                 break;
             case R.id.menu_reports_myreports:
                 // Llamar al fragmento
