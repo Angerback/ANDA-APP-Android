@@ -112,7 +112,7 @@ public class Register extends Fragment implements  View.OnClickListener {
     }
 
     /** Método que valida que se halla ingresado
-     por lo menos el nicname el mail y la contraseña */
+     por lo menos el nickname el mail y la contraseña */
     private boolean validate() {
         if(et_nickname.getText().toString().trim().equals("") ||
                 et_email.getText().toString().trim().equals("") ||
