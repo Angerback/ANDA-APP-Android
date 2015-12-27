@@ -7,19 +7,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.SurfaceTexture;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,25 +23,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.cloudinary.Cloudinary;
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.controllers.UploadCouldinary;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.Manifest;
 
 import android.app.ProgressDialog;
 
@@ -73,8 +58,11 @@ public class NewReport extends Fragment implements View.OnClickListener {
     String latitud;
     String longitud;
     Location location;
-    LocationManager locationManager;
+    private LocationManager locationManager;
     boolean gpsActivo;
+    private LocationListener locationListener;
+    static final int MIN_TIME = 0;
+    static final int MIN_DISTANCE = 0;
 
 
     /** Constructor */
@@ -82,6 +70,7 @@ public class NewReport extends Fragment implements View.OnClickListener {
     public NewReport(Context context) {
 
         this.context = context;
+
 
     }
 
@@ -162,12 +151,13 @@ public class NewReport extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_capture:
 
+
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera_intent, CAM_REQUEST);
                 getLocation();
-                System.out.println("SALIO DEL GETLOCATION");
-
                 break;
+
+
 
         }
     }// onClick
@@ -201,15 +191,12 @@ public class NewReport extends Fragment implements View.OnClickListener {
 
                                 resultado = output;
                                 System.out.println(resultado);
-
-
                             }
                         }).execute(finaleFile.toString());
 
             }
 
         }
-
     }// End onActivityResult
 
 
@@ -233,47 +220,67 @@ public class NewReport extends Fragment implements View.OnClickListener {
     public void getLocation() {
 
         locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        gpsActivo = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        gpsActivo = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (gpsActivo) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ActivityCompat.checkSelfPermission(context,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     System.out.println("NO HAY PERMISOS");
 
-                    return;
+                } else {
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
-                else{
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                }
-            }
-            else{
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } else {
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
 
 
+        } else {
+            Toast.makeText(this.context, "EL GPS NO ESTA ACTIVADO", Toast.LENGTH_LONG).show();
         }
-        else {
-            Toast.makeText(context,"EL GPS NO ESTA ACTIVO",Toast.LENGTH_LONG).show();
-        }
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mostrarLocalizacion(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
+
+
+
+
+    }// End getLocation()
+
+
+    public void mostrarLocalizacion(Location loc){
         if(location != null){
-            double lati = location.getLatitude();
-            double longi =location.getLongitude();
-            latitud = String.valueOf(lati);
-            longitud = String.valueOf(longi);
+            latitud = String.valueOf(loc.getLatitude());
+            longitud = String.valueOf(loc.getLongitude());
             System.out.println(latitud);
             System.out.println(longitud);
+        }
+        else{
+            System.out.println("ESTA NULO");
+        }
+    }
 
-        }
-        else {
-            System.out.println("ES NULO");
-            latitud = "null";
-            longitud = "null";
-        }
-    }// End getLocation()
+
 
 
 }
