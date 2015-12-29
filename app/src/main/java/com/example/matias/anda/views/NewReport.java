@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +23,13 @@ import android.widget.Toast;
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.controllers.UploadCouldinary;
+import com.example.matias.anda.utilities.GPSTracker;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
+
 import android.app.ProgressDialog;
 
 
@@ -46,8 +53,11 @@ public class NewReport extends Fragment implements View.OnClickListener {
     String id;
 
 
+    File finaleFile;
     /** Constructor */
+    public NewReport(){
 
+    }
     public NewReport(Context context) {
         this.context = context;
 
@@ -94,10 +104,8 @@ public class NewReport extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ok_newreport:
-                JsonHandler jsonHandler = new JsonHandler();
-                jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
-                        resultado.toString(), id, latitud, longitud);
-                SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
+
+
 
                 if (validate()) {
                     pDialog = new ProgressDialog(getActivity());
@@ -105,23 +113,16 @@ public class NewReport extends Fragment implements View.OnClickListener {
                     pDialog.setIndeterminate(false);
                     pDialog.setCancelable(false);
                     pDialog.show();
-                    if (su.isNetworkAvailable()) {
-                        new HttpPost(getActivity().getApplicationContext(),
-                                new HttpPost.AsyncResponse() {
+                    new UploadCouldinary(getActivity().getApplicationContext(),
+                            new UploadCouldinary.AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    resultado = output;
+                                    System.out.println(resultado);
+                                }
+                            }, this.myHandler).execute(finaleFile.toString()
+                    );
 
-                                    @Override
-                                    public void processFinish(String output) {
-                                        System.out.println("salida new Report:" + output + "\n");
-                                        getActivity().getFragmentManager().popBackStack();
-                                        pDialog.dismiss();
-                                    }
-                                }).execute(URL_POST, jsonobject, auth_token);
-                    }//network-available
-                    else {
-                        Toast toast = Toast.makeText(this.context, "NO HAY CONEXION A INTERNET",
-                                Toast.LENGTH_LONG);
-                        toast.show();
-                    }
 
                 } //if-validate
                 else {
@@ -131,14 +132,23 @@ public class NewReport extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btn_capture:
-
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera_intent, CAM_REQUEST);
+
                 // Se obtiene la geolocalizacion del lugar donde se tomo la foto
-                SystemUtilities utilities = new SystemUtilities(getActivity().getApplicationContext());
-                Location location = utilities.getLocation();
+                //SystemUtilities utilities = new SystemUtilities(getActivity().getApplicationContext());
+                //Location location = this.getLocation();
+                GPSTracker tracker = new GPSTracker(this.context);
+                if (!tracker.canGetLocation()) {
+                    tracker.showSettingsAlert();
+                } else {
+                    latitud = Double.toString(tracker.getLatitude());
+                    longitud = Double.toString(tracker.getLongitude());
+
+                }/*
                 latitud = String.valueOf(location.getLatitude());
                 longitud = String.valueOf(location.getLongitude());
+                */
                 break;
 
         }
@@ -162,18 +172,11 @@ public class NewReport extends Fragment implements View.OnClickListener {
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 foto.setImageBitmap(cameraImage);
                 Uri temUri = getImageUri(getActivity().getApplicationContext(), cameraImage);
-                File finaleFile = new File(getRealPathFromURI(temUri,
+                finaleFile = new File(getRealPathFromURI(temUri,
                         getActivity().getApplicationContext()));
                 System.out.println("RUTA ABSOLUTA" + finaleFile);
 
-                new UploadCouldinary(getActivity().getApplicationContext(),
-                        new UploadCouldinary.AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                resultado = output;
-                                System.out.println(resultado);
-                            }
-                        }).execute(finaleFile.toString());
+
             }
         }
     }// End onActivityResult
@@ -195,7 +198,59 @@ public class NewReport extends Fragment implements View.OnClickListener {
         return cursor.getString(idx);
     }// End getRealPathFromURI
 
+    Handler myHandler = new Handler() {
 
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    JsonHandler jsonHandler = new JsonHandler();
+                    jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
+                            resultado.toString(), id, latitud, longitud);
+                    SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
+                    if (new SystemUtilities(getActivity().getApplicationContext()).isNetworkAvailable()) {
+                        new HttpPost(getActivity().getApplicationContext(),
+                                new HttpPost.AsyncResponse() {
+
+                                    @Override
+                                    public void processFinish(String output) {
+                                        System.out.println("salida new Report:" + output + "\n");
+                                        getActivity().getFragmentManager().popBackStack();
+                                        pDialog.dismiss();
+                                    }
+                                }).execute(URL_POST, jsonobject, auth_token);
+                    }//network-available
+                    else {
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), "NO HAY CONEXION A INTERNET",
+                                Toast.LENGTH_LONG);
+                        toast.show();
+                        pDialog.dismiss();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    public Location getLocation()
+    {
+        // Get the location manager
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        Double lat,lon;
+        try {
+            lat = location.getLatitude ();
+            lon = location.getLongitude ();
+            return location;
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }// END NewReport

@@ -3,6 +3,7 @@ package com.example.matias.anda.views;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class MainFragment extends Fragment implements  View.OnClickListener  {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_iniciarsesion:
+
                 transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, new Login());
                 transaction.addToBackStack(null);

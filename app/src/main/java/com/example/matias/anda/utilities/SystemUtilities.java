@@ -27,8 +27,8 @@ public class SystemUtilities {
     private LocationManager locationManager;
     boolean gpsActivo;
     private LocationListener locationListener;
-    static final int MIN_TIME = 0;
-    static final int MIN_DISTANCE = 0;
+    static final int MIN_TIME = 1;
+    static final int MIN_DISTANCE = 1;
 
 
     /**
@@ -55,6 +55,7 @@ public class SystemUtilities {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         gpsActivo = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (gpsActivo) {
+            System.out.println("El gps está activo");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.checkSelfPermission(this.context,
                         Manifest.permission.ACCESS_FINE_LOCATION)
@@ -62,6 +63,7 @@ public class SystemUtilities {
                         && ActivityCompat.checkSelfPermission(this.context,
                         Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED)
+
                 {
                     System.out.println(" NO HAY PERMISOS");
                     return null;

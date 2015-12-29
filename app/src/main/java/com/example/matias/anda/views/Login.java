@@ -3,6 +3,7 @@ package com.example.matias.anda.views;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ public class Login extends Fragment implements  View.OnClickListener {
     EditText et_password;
     Button btn_login;
     CheckBox checkBox;
+    ProgressDialog pDialog;
 
     public Login() {
         // Required empty public constructor
@@ -68,6 +70,7 @@ public class Login extends Fragment implements  View.OnClickListener {
 
         switch (v.getId()){
             case R.id.btn_login_iniciarsesion:
+
                 // Intent para ir a la actividad reportes una vez el login sea satisfactorio
                 final Intent intent = new Intent(getActivity().getBaseContext(),
                         Reports.class);
@@ -78,6 +81,11 @@ public class Login extends Fragment implements  View.OnClickListener {
 
                 /** Validar los campos */
                 if(validate()){
+                    pDialog = new ProgressDialog(getActivity());
+                    pDialog.setMessage("Iniciando sesión...");
+                    pDialog.setIndeterminate(false);
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     /** Chequear conexion a internet */
                     if(su.isNetworkAvailable()){
 
@@ -88,6 +96,7 @@ public class Login extends Fragment implements  View.OnClickListener {
                             System.out.println("Estoy en el Login: " + output + "\n");
 
                             intent.putExtra("auth_key",output);
+                            pDialog.dismiss();
                             getActivity().startActivity(intent);
                         }}).execute(URL_POST, jsonobject,"False");
                     }
@@ -97,6 +106,7 @@ public class Login extends Fragment implements  View.OnClickListener {
                                 Toast.LENGTH_LONG);
                         toast.show();
                     }
+
 
                 }
                 else{
