@@ -79,9 +79,11 @@ public class NewReport extends Fragment implements View.OnClickListener {
         if (flag == 1) {
             // Obtener el key enviado desde la clase Reports
             String key = getArguments().getString("key");
+            System.out.println("newReport: KEY= "+key);
             JsonHandler jh = new JsonHandler();
             id = jh.getValor(key, "idUsuario");
             auth_token = jh.getValor(key, "auth_token");
+
 
             URL_POST = URL_POST.concat(URL).concat(id).concat("/").concat("reportes");
             System.out.println("La Url es: " + URL_POST);

@@ -5,19 +5,15 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    tools:context="com.example.matias.anda.views.ViewReports">
+    tools:context="com.example.matias.anda.views.ViewReports"
+    android:background="#c7e2f0">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#e2d4e6" />
 
     <TextView
-        android:layout_width="235dp"
-        android:layout_height="229dp"
+        android:layout_width="205dp"
+        android:layout_height="186dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="AQUI VA UNA LISTA CON LOS ULTIMOS REPORTES, ESTE ES EL FRAGMENT PRINCIPAL PARA TODOS LOS USUARIOS LOGUEADOS"
+        android:text="VISTA PRINCIPAL, VER REPORTES "
+        android:id="@+id/textView20"
         android:layout_gravity="center" />
-
 </FrameLayout>

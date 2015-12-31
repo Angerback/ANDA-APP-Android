@@ -1,5 +1,6 @@
 package com.example.matias.anda.utilities;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,5 +94,29 @@ public class JsonHandler {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    public String[] getReportes(String reportes){
+
+        try {
+            JSONArray ja = new JSONArray(reportes);
+            if(ja == null){
+                return  null;
+            }
+            String[] result = new String[ja.length()];
+            String reporte;
+            for (int i = 0; i< ja.length();i++){
+                JSONObject row = ja.getJSONObject(i);
+                reporte = " " + row.getString("idUuario") + " " + row.getString("fecha");
+                result[i] = reporte;
+            }
+            return  result;
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
     }
 }

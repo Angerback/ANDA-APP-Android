@@ -18,20 +18,24 @@ public class Reports extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
-        transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.reports_container, new ViewReports());
-        transaction.addToBackStack("irViewReports");
-        transaction.commit();
-
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Obtener los datos enviados desde el login.
+
+        // Obtener los datos enviados desde el login (id,key)
         Intent intent = getIntent();
         token = intent.getStringExtra("auth_key");
+        System.out.println("Estoy en reports,  KEY= " + token);
+
+
+        //LLamar al fragmento
+        transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.reports_container, new ViewReports());
+        transaction.addToBackStack("irViewReports");
+        transaction.commit();
 
     }
 
@@ -57,8 +61,8 @@ public class Reports extends AppCompatActivity {
                 salir.putExtra("Exit me", true);
                 startActivity(salir);
                 finish();
-
                 break;
+
             case R.id.menu_reports_myreports:
                 // Llamar al fragmento
                 transaction = getFragmentManager().beginTransaction();
