@@ -14,30 +14,27 @@ public class Reports extends AppCompatActivity {
 
     String token;
     FragmentTransaction transaction;
+    Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         // Obtener los datos enviados desde el login (id,key)
         Intent intent = getIntent();
         token = intent.getStringExtra("auth_key");
-        System.out.println("Estoy en reports,  KEY= " + token);
 
+
+        //Configurar el bundle
+        bundle = new Bundle();
+        bundle.putString("key", token);
 
         //LLamar al fragmento
-        transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.reports_container, new ViewReports());
-        transaction.addToBackStack("irViewReports");
-        transaction.commit();
+        callFragmentViewReport();
 
     }
+
 
     /**
      * Método que crea el menú superior
@@ -66,13 +63,13 @@ public class Reports extends AppCompatActivity {
             case R.id.menu_reports_myreports:
                 // Llamar al fragmento
                 transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.reports_container, new MyReports());
+                MyReports myReports = new MyReports(getApplicationContext());
+                myReports.setArguments(bundle);
+                transaction.replace(R.id.reports_container, myReports);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.menu_reports_newreport:
-                Bundle bundle = new Bundle();
-                bundle.putString("key",token);
 
                 //Llamar al fragmento
                 transaction = getFragmentManager().beginTransaction();
@@ -100,4 +97,17 @@ public class Reports extends AppCompatActivity {
             getFragmentManager().popBackStack("irViewReports",0);
         }
     }// onBackPressed()
+
+    /** Método que llama al fragmento viewReportes */
+
+    private void callFragmentViewReport() {
+
+        transaction = getFragmentManager().beginTransaction();
+        ViewReports viewReports = new ViewReports();
+        viewReports.setArguments(bundle);
+        transaction.add(R.id.reports_container, viewReports);
+        transaction.addToBackStack("irViewReports");
+        transaction.commit();
+
+    }
 }

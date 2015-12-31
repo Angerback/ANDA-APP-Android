@@ -31,7 +31,8 @@ public class ViewReports extends Fragment {
 
     Context context;
     String id;
-    String auth_token;
+    String token;
+
     static final String URL_GET = "http://pliskin12.ddns.net:8080/taller-bd-11/reportes";
 
 
@@ -39,8 +40,6 @@ public class ViewReports extends Fragment {
     public ViewReports(){
 
     }
-    /** Constructor */
-
 
 
     @Override
@@ -57,11 +56,11 @@ public class ViewReports extends Fragment {
         super.onResume();
 
 
-/*        String token_id = getArguments().getString("key");
+        String token_id = getArguments().getString("key");
         JsonHandler jh = new JsonHandler();
         id = jh.getValor(token_id, "idUsuario");
-        auth_token = jh.getValor(token_id, "auth_token");
-        System.out.println("viewReports "+ "id es:" +id +""+ "token es:"+auth_token);*/
+        token = jh.getValor(token_id, "auth_token");
+
 
 
 

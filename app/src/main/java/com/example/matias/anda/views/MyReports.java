@@ -22,7 +22,9 @@ public class MyReports extends Fragment {
         // Required empty public constructor
     }
 
-
+    public MyReports(Context context) {
+        this.context = context;
+    }
 
 
     @Override
@@ -36,7 +38,7 @@ public class MyReports extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-/*        String key = getArguments().getString("key");
-        System.out.println("MyReport: KEY= "+key);*/
+        String key = getArguments().getString("key");
+
     }
 }

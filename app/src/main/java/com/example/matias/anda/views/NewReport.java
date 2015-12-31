@@ -162,18 +162,13 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             mMapView.onResume();
             // Obtener el key enviado desde la clase Reports
             String key = getArguments().getString("key");
-            System.out.println("newReport: KEY= "+key);
             JsonHandler jh = new JsonHandler();
             id = jh.getValor(key, "idUsuario");
             auth_token = jh.getValor(key, "auth_token");
-
-
             URL_POST = URL_POST.concat(URL).concat(id).concat("/").concat("reportes");
             System.out.println("La Url es: " + URL_POST);
-            System.out.println("auth_token es: " + auth_token);
-            System.out.println("id del usuarios es:" + id);
 
-
+            
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
             btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_capture);
             btn_ok = (FloatingActionButton) getView().findViewById(R.id.btn_ok_newreport);
