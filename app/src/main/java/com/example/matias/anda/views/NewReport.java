@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +27,26 @@ import com.example.matias.anda.controllers.UploadCouldinary;
 import com.example.matias.anda.utilities.GPSTracker;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 
+import android.support.design.widget.FloatingActionButton;
 
-public class NewReport extends Fragment implements View.OnClickListener {
+
+public class NewReport extends Fragment implements View.OnClickListener, OnMapReadyCallback{
 
     String URL = "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/";
     private ProgressDialog pDialog;
@@ -42,8 +55,8 @@ public class NewReport extends Fragment implements View.OnClickListener {
     String resultado = "null";
     String URL_POST = "";
     EditText et_contenido;
-    Button btn_ok;
-    Button btn_capture;
+    FloatingActionButton btn_ok;
+    FloatingActionButton btn_capture;
     String auth_token;
     String jsonobject;
     ImageView foto;
@@ -51,8 +64,9 @@ public class NewReport extends Fragment implements View.OnClickListener {
     String latitud;
     String longitud;
     String id;
-
-
+    GPSTracker tracker;
+    double latDob = 0.0;
+    double lonDob = 0.0;
     File finaleFile;
     /** Constructor */
     public NewReport(){
@@ -60,15 +74,82 @@ public class NewReport extends Fragment implements View.OnClickListener {
     }
     public NewReport(Context context) {
         this.context = context;
+        tracker = new GPSTracker(this.context, myHandler);
 
+    }
+    MapView mMapView;
+    private GoogleMap googleMap;
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        if (!tracker.canGetLocation()) {
+            tracker.showSettingsAlert();
+        } else {
+            latDob = tracker.getLatitude();
+            lonDob = tracker.getLongitude();
+            latitud = Double.toString(latDob);
+            longitud = Double.toString(lonDob);
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            googleMap.setMyLocationEnabled(true);
+            googleMap.setTrafficEnabled(true);
+            googleMap.setIndoorEnabled(true);
+            googleMap.setBuildingsEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(latDob, lonDob)).zoom(17).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+            setUpMap();
+/*
+            // create marker
+            MarkerOptions marker = new MarkerOptions().position(
+                    new LatLng(tracker.getLatitude(), tracker.getLongitude())).title("Hello Maps");
+
+            // Changing marker icon
+            marker.icon(BitmapDescriptorFactory
+                    .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
+            // adding marker
+            googleMap.addMarker(marker);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(latDob, lonDob)).zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+
+            // Perform any camera updates here
+            */
+        }
+
+    }
+
+    private void setUpMap(){
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(latDob, lonDob)).zoom(17).build();
+        googleMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
     }
 
     /** Método que crea la vista del fragmento */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // inflat and return the layout
+        View v = inflater.inflate(R.layout.fragment_new_report_v2, container, false);
+        mMapView = (MapView) v.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
 
-        return inflater.inflate(R.layout.fragment_new_report, container, false);
+        mMapView.onResume();// needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(this);
+        //Ahora el metodo onMapReady es ejecutado cuando el mapa esta listo para ser mostrado
+        return v;
     }// End onCreateView
 
     /** Método que se ejecuta luego de que el fragmento es creado */
@@ -76,7 +157,9 @@ public class NewReport extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
+
         if (flag == 1) {
+            mMapView.onResume();
             // Obtener el key enviado desde la clase Reports
             String key = getArguments().getString("key");
             System.out.println("newReport: KEY= "+key);
@@ -92,8 +175,8 @@ public class NewReport extends Fragment implements View.OnClickListener {
 
 
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
-            btn_capture = (Button) getView().findViewById(R.id.btn_capture);
-            btn_ok = (Button) getView().findViewById(R.id.btn_ok_newreport);
+            btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_capture);
+            btn_ok = (FloatingActionButton) getView().findViewById(R.id.btn_ok_newreport);
             foto = (ImageView) getView().findViewById(R.id.iv_foto);
             btn_capture.setOnClickListener(this);
             btn_ok.setOnClickListener(this);
@@ -106,9 +189,6 @@ public class NewReport extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ok_newreport:
-
-
-
                 if (validate()) {
                     pDialog = new ProgressDialog(getActivity());
                     pDialog.setMessage("Cargando nuevo reporte...");
@@ -140,14 +220,7 @@ public class NewReport extends Fragment implements View.OnClickListener {
                 // Se obtiene la geolocalizacion del lugar donde se tomo la foto
                 //SystemUtilities utilities = new SystemUtilities(getActivity().getApplicationContext());
                 //Location location = this.getLocation();
-                GPSTracker tracker = new GPSTracker(this.context);
-                if (!tracker.canGetLocation()) {
-                    tracker.showSettingsAlert();
-                } else {
-                    latitud = Double.toString(tracker.getLatitude());
-                    longitud = Double.toString(tracker.getLongitude());
-
-                }/*
+                /*
                 latitud = String.valueOf(location.getLatitude());
                 longitud = String.valueOf(location.getLongitude());
                 */
@@ -172,8 +245,10 @@ public class NewReport extends Fragment implements View.OnClickListener {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAM_REQUEST) {
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-                foto.setImageBitmap(cameraImage);
+                //foto.setImageBitmap(cameraImage);
+
                 Uri temUri = getImageUri(getActivity().getApplicationContext(), cameraImage);
+                foto.setImageURI(temUri);
                 finaleFile = new File(getRealPathFromURI(temUri,
                         getActivity().getApplicationContext()));
                 System.out.println("RUTA ABSOLUTA" + finaleFile);
@@ -229,30 +304,18 @@ public class NewReport extends Fragment implements View.OnClickListener {
                         pDialog.dismiss();
                     }
                     break;
+                case 1:
+                    latDob = tracker.getLatitude();
+                    lonDob = tracker.getLongitude();
+                    setUpMap();
+                    break;
                 default:
                     break;
+
             }
         }
     };
 
-    public Location getLocation()
-    {
-        // Get the location manager
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        Double lat,lon;
-        try {
-            lat = location.getLatitude ();
-            lon = location.getLongitude ();
-            return location;
-        }
-        catch (NullPointerException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
 }// END NewReport

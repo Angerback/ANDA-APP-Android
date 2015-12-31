@@ -10,6 +10,7 @@ package com.example.matias.anda.utilities;
         import android.location.LocationListener;
         import android.location.LocationManager;
         import android.os.Bundle;
+        import android.os.Handler;
         import android.provider.Settings;
         import android.util.Log;
 
@@ -39,8 +40,11 @@ public final class GPSTracker implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTracker(Context context) {
+    private Handler handler;
+
+    public GPSTracker(Context context, Handler handler) {
         this.mContext = context;
+        this.handler = handler;
         getLocation();
     }
     /**
@@ -194,6 +198,7 @@ public final class GPSTracker implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        handler.sendEmptyMessage(1);
     }
 
     @Override
