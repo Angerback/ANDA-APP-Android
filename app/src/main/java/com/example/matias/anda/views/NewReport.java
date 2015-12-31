@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 
+import android.support.design.widget.FloatingActionButton;
+
 
 public class NewReport extends Fragment implements View.OnClickListener, OnMapReadyCallback{
 
@@ -52,8 +55,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     String resultado = "null";
     String URL_POST = "";
     EditText et_contenido;
-    Button btn_ok;
-    Button btn_capture;
+    FloatingActionButton btn_ok;
+    FloatingActionButton btn_capture;
     String auth_token;
     String jsonobject;
     ImageView foto;
@@ -122,7 +125,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
     private void setUpMap(){
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latDob, lonDob)).build();
+                .target(new LatLng(latDob, lonDob)).zoom(17).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
     }
@@ -132,7 +135,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // inflat and return the layout
-        View v = inflater.inflate(R.layout.fragment_new_report, container, false);
+        View v = inflater.inflate(R.layout.fragment_new_report_v2, container, false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
@@ -145,6 +148,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
         }
 
         mMapView.getMapAsync(this);
+        //Ahora el metodo onMapReady es ejecutado cuando el mapa esta listo para ser mostrado
         return v;
     }// End onCreateView
 
@@ -169,8 +173,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
 
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
-            btn_capture = (Button) getView().findViewById(R.id.btn_capture);
-            btn_ok = (Button) getView().findViewById(R.id.btn_ok_newreport);
+            btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_capture);
+            btn_ok = (FloatingActionButton) getView().findViewById(R.id.btn_ok_newreport);
             foto = (ImageView) getView().findViewById(R.id.iv_foto);
             btn_capture.setOnClickListener(this);
             btn_ok.setOnClickListener(this);
@@ -239,8 +243,10 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAM_REQUEST) {
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-                foto.setImageBitmap(cameraImage);
+                //foto.setImageBitmap(cameraImage);
+
                 Uri temUri = getImageUri(getActivity().getApplicationContext(), cameraImage);
+                foto.setImageURI(temUri);
                 finaleFile = new File(getRealPathFromURI(temUri,
                         getActivity().getApplicationContext()));
                 System.out.println("RUTA ABSOLUTA" + finaleFile);
@@ -296,13 +302,14 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                         pDialog.dismiss();
                     }
                     break;
-                default:
-                    break;
                 case 1:
                     latDob = tracker.getLatitude();
                     lonDob = tracker.getLongitude();
                     setUpMap();
                     break;
+                default:
+                    break;
+
             }
         }
     };
