@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -68,6 +70,10 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     double latDob = 0.0;
     double lonDob = 0.0;
     File finaleFile;
+    public static int count=0;
+    public String dir;
+    Uri outputFileUri;
+    String pathToImage;
     /** Constructor */
     public NewReport(){
 
@@ -149,6 +155,13 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
         mMapView.getMapAsync(this);
         //Ahora el metodo onMapReady es ejecutado cuando el mapa esta listo para ser mostrado
+
+
+        //Se crea una carpeta "Anda" para guardar las fotos tomadas por la camara
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Anda/";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+
         return v;
     }// End onCreateView
 
@@ -197,7 +210,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                                     resultado = output;
                                     System.out.println(resultado);
                                 }
-                            }, this.myHandler).execute(finaleFile.toString()
+                            }, this.myHandler).execute(pathToImage
                     );
 
 
@@ -209,16 +222,16 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                 }
                 break;
             case R.id.btn_capture:
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(camera_intent, CAM_REQUEST);
 
-                // Se obtiene la geolocalizacion del lugar donde se tomo la foto
-                //SystemUtilities utilities = new SystemUtilities(getActivity().getApplicationContext());
-                //Location location = this.getLocation();
-                /*
-                latitud = String.valueOf(location.getLatitude());
-                longitud = String.valueOf(location.getLongitude());
-                */
+                // Se incremente el contador cada vez que una foto es guardada, "1.jpg","2.jpg",...
+                count++;
+                String file = dir+count+".jpg";
+                File newfile = new File(file);
+                outputFileUri = Uri.fromFile(newfile);
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                startActivityForResult(camera_intent, CAM_REQUEST);
+                
                 break;
 
         }
@@ -239,36 +252,15 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAM_REQUEST) {
-                Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-                //foto.setImageBitmap(cameraImage);
-
-                Uri temUri = getImageUri(getActivity().getApplicationContext(), cameraImage);
-                foto.setImageURI(temUri);
-                finaleFile = new File(getRealPathFromURI(temUri,
-                        getActivity().getApplicationContext()));
-                System.out.println("RUTA ABSOLUTA" + finaleFile);
-
-
+                // Se obtiene la ruta
+                pathToImage = outputFileUri.getPath();
+                // Se muestra en pantalla como un bitmap
+                foto.setImageBitmap(BitmapFactory.decodeFile(pathToImage));
             }
         }
     }// End onActivityResult
 
-    /** Obtener el URI desde el BipMap */
-    public Uri getImageUri(Context context, Bitmap image) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                image, "Title", null);
-        return Uri.parse(path);
-    }//Enf getImageUri
 
-    /** Obtener la ruta absoluta */
-    public String getRealPathFromURI(Uri uri, Context context) {
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }// End getRealPathFromURI
 
     Handler myHandler = new Handler() {
 
