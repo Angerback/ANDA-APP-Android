@@ -39,6 +39,7 @@ public class Login extends Fragment implements  View.OnClickListener {
     CheckBox checkBox;
     ProgressDialog pDialog;
 
+
     public Login() {
         // Required empty public constructor
     }
@@ -71,9 +72,7 @@ public class Login extends Fragment implements  View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_login_iniciarsesion:
 
-                // Intent para ir a la actividad reportes una vez el login sea satisfactorio
-                final Intent intent = new Intent(getActivity().getBaseContext(),
-                        Reports.class);
+
                 JsonHandler jsonHandler = new JsonHandler();
                 jsonobject = jsonHandler.getLogin(et_nickname.getText().toString(),
                         et_password.getText().toString());
@@ -93,13 +92,27 @@ public class Login extends Fragment implements  View.OnClickListener {
                                 new HttpPost.AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
-                            System.out.println("Estoy en el Login: " + output + "\n");
 
-                            intent.putExtra("auth_key",output);
                             pDialog.dismiss();
-                            getActivity().startActivity(intent);
+                            if(output == "error_responsive"){
+                                //Usuario o contraseña incorrecta
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Usuario o Contraseña Incorrecta",
+                                        Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+
+                            else{
+                                // Intent para ir a la actividad reportes una vez el login sea satisfactorio
+                                final Intent intent = new Intent(getActivity().getBaseContext(),
+                                        Reports.class);
+                                intent.putExtra("auth_key", output);
+                                getActivity().startActivity(intent);
+                            }
+
                         }}).execute(URL_POST, jsonobject,"False");
+
                     }
+
 
                     else{
                         Toast toast = Toast.makeText(this.context,"NO HAY CONEXION A INTERNET",

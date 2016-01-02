@@ -101,12 +101,8 @@ public class HttpPost extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String resultado) {
         super.onPostExecute(resultado);
 
-        if(resultado == "error_responsive"){
-            Toast toast = Toast.makeText(this.context, "ERROR RESPONSIVE",
-                    Toast.LENGTH_LONG);
-            toast.show();
-        }
-        else if(resultado == "no_server"){
+
+         if(resultado == "no_server"){
             Toast toast = Toast.makeText(this.context,
                     "No se puede alcanzar el servidor",
                     Toast.LENGTH_LONG);
