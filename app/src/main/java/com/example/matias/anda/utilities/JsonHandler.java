@@ -83,7 +83,7 @@ public class JsonHandler {
             json.put("foto",foto);
             json.put("latitud",latitud);
             json.put("longitud",longitud);
-            json.put("idFacultad","204");
+            json.put("idUniversidad","20");
             json.put("idUsuario",id);
             json.put("solucionado","0");
             json.put("validado","0");

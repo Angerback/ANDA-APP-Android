@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.example.matias.anda.R;
+import com.example.matias.anda.controllers.HttpGet;
 import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.controllers.UploadCouldinary;
 import com.example.matias.anda.utilities.GPSTracker;
@@ -51,6 +52,7 @@ import android.support.design.widget.FloatingActionButton;
 public class NewReport extends Fragment implements View.OnClickListener, OnMapReadyCallback{
 
     String URL = "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/";
+    String URL_UES = "http://pliskin12.ddns.net:8080/taller-bd-11/universidades";
     private ProgressDialog pDialog;
     private Context context;
     static final int CAM_REQUEST = 1;
@@ -181,7 +183,11 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             URL_POST = URL_POST.concat(URL).concat(id).concat("/").concat("reportes");
             System.out.println("La Url es: " + URL_POST);
 
-            
+            // Get para el combobox con UES
+            getUniversidades();
+
+
+
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
             btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_capture);
             btn_ok = (FloatingActionButton) getView().findViewById(R.id.btn_ok_newreport);
@@ -191,6 +197,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             flag = 0;
         }
     }//End onResume
+
 
     /** Método que se ejecuta al presionar el boton */
     @Override
@@ -303,6 +310,12 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
         }
     };
 
+    private void getUniversidades() {
+
+        HttpGet h = new HttpGet(getActivity().getApplicationContext());
+        h.execute(URL_UES,auth_token);
+
+    }
 
 
 }// END NewReport
