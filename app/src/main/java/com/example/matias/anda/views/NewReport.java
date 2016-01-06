@@ -1,8 +1,10 @@
 package com.example.matias.anda.views;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpGet;
@@ -42,6 +45,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
@@ -71,11 +75,11 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     GPSTracker tracker;
     double latDob = 0.0;
     double lonDob = 0.0;
-    File finaleFile;
     public static int count=0;
     public String dir;
     Uri outputFileUri;
     String pathToImage;
+    static  String GET_UES = "get_ues";
     /** Constructor */
     public NewReport(){
 
@@ -303,6 +307,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                     lonDob = tracker.getLongitude();
                     setUpMap();
                     break;
+                case 2:
+
                 default:
                     break;
 
@@ -312,8 +318,16 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
     private void getUniversidades() {
 
-        HttpGet h = new HttpGet(getActivity().getApplicationContext());
-        h.execute(URL_UES,auth_token);
+
+            HttpGet h = new HttpGet(getActivity().getApplicationContext());
+            h.execute(URL_UES, auth_token, GET_UES);
+            //
+            String uesList = (String) getArguments().get("uesList");
+            System.out.println("UesList: "+uesList);
+
+
+
+
 
     }
 

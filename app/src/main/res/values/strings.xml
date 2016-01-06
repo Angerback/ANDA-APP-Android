@@ -33,5 +33,6 @@
     <string name="newreport">Nuevo Reporte</string>
     <string name="myrepots">Mis Reportes</string>
     <string name="cerrarsesion">Cerrar Sesión</string>
+    <string name="select_u">Universidad</string>
 
 </resources>

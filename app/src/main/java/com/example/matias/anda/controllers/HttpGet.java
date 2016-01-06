@@ -3,6 +3,10 @@ package com.example.matias.anda.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+
+import com.example.matias.anda.utilities.JsonHandler;
+import com.example.matias.anda.views.NewReport;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -13,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.logging.Handler;
 
 /**
  * Created by Matias on 30-12-2015.
@@ -21,6 +26,14 @@ public class HttpGet extends AsyncTask<String, Void, String> {
 
 
     private Context context;
+    public String ues = null;
+    public String reportes = null;
+    Bundle bundle = new Bundle();
+    NewReport newReport = new NewReport();
+    static  String KEY_UES = "uesList";
+    static  String KEY_REPORTS = "reportsList";
+
+
 
     public HttpGet(Context context) {
         this.context = context;
@@ -39,30 +52,14 @@ public class HttpGet extends AsyncTask<String, Void, String> {
             connection.setDoInput(true);
             connection.connect();
 
-            System.out.println("AQUI");
-
-            // Get resposive
-  /*          BufferedReader in = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while((inputLine = in.readLine()) != null)
-                response.append(inputLine);
-            in.close();
-            System.out.println("Responsive :" + response.toString() + "\n");
-
-            return  response.toString();*/
-
-/*
-            InputStream in = new BufferedInputStream(connection.getInputStream());
-            int data = in.read();
-            while (data != -1) {
-                char current = (char) data;
-                data = in.read();
-                System.out.print(current);
-                System.out.println("CACA");
+            if(params[2] == "get_ues"){
+                ues = params[2];
             }
-*/
+
+            if(params[2] == "get_reportes"){
+                reportes = params[2];
+            }
+
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder sb = new StringBuilder();
@@ -71,6 +68,8 @@ public class HttpGet extends AsyncTask<String, Void, String> {
                 sb.append(line+"\n");
             }
             br.close();
+
+            System.out.println("get Responsive: "+ sb.toString());
             return sb.toString();
 
 
@@ -84,5 +83,19 @@ public class HttpGet extends AsyncTask<String, Void, String> {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(String resultado) {
 
+        if (ues != null){
+            bundle.putString(KEY_UES,resultado);
+            newReport.setArguments(bundle);
+        }
+
+        if(reportes != null){
+            bundle.putString(KEY_REPORTS,resultado);
+            newReport.setArguments(bundle);
+        }
+
+
+    }
 }

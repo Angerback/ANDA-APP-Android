@@ -119,4 +119,28 @@ public class JsonHandler {
         return  null;
 
     }
+
+    public String[] getUes(String ues){
+
+        try {
+            JSONArray ja = new JSONArray(ues);
+            if(ja == null){
+                return  null;
+            }
+            String[] result = new String[ja.length()];
+            String u;
+            for (int i = 0; i< ja.length();i++){
+                JSONObject row = ja.getJSONObject(i);
+                u = " " + row.getString("encargado");
+            }
+            return  result;
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
+    }
+
 }

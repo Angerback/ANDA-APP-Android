@@ -31,9 +31,10 @@ public class ViewReports extends Fragment {
 
     Context context;
     String id;
-    String token;
+    String auth_token;
+    static String GET_REPORTES = "get_reportes";
 
-    static final String URL_GET = "http://pliskin12.ddns.net:8080/taller-bd-11/reportes";
+    static final String URL_GET = "http://pliskin12.ddns.net:8080/taller-bd-11/reportes/rango/0/9";
 
 
     /** Constructor */
@@ -59,22 +60,14 @@ public class ViewReports extends Fragment {
         String token_id = getArguments().getString("key");
         JsonHandler jh = new JsonHandler();
         id = jh.getValor(token_id, "idUsuario");
-        token = jh.getValor(token_id, "auth_token");
+        auth_token = jh.getValor(token_id, "auth_token");
 
 
+        HttpGet getReports = new HttpGet(getActivity().getApplicationContext());
+        getReports.execute(URL_GET,auth_token,GET_REPORTES);
+        String reportes = (String) getArguments().get("reportsList");
+        System.out.println("listReports"+reportes);
 
-
-/*        IntentFilter intentFilter = new IntentFilter("httpData");
-        br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                JsonHandler jh = new JsonHandler();
-                String[] reportsList = jh.getReportes(intent.getStringExtra("data"));
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.support_simple_spinner_dropdown_item,reportsList);
-                setListAdapter(adapter);
-            }
-        };
-        getActivity().registerReceiver(br,intentFilter);*/
 
 
 
