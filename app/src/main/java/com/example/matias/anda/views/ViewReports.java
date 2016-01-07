@@ -63,10 +63,8 @@ public class ViewReports extends Fragment {
         auth_token = jh.getValor(token_id, "auth_token");
 
 
-        HttpGet getReports = new HttpGet(getActivity().getApplicationContext());
-        getReports.execute(URL_GET,auth_token,GET_REPORTES);
-        String reportes = (String) getArguments().get("reportsList");
-        System.out.println("listReports"+reportes);
+
+        //HttpGet getReports = new HttpGet(getActivity().getApplicationContext());
 
 
 

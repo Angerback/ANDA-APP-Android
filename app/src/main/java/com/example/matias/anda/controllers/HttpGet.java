@@ -26,17 +26,13 @@ public class HttpGet extends AsyncTask<String, Void, String> {
 
 
     private Context context;
-    public String ues = null;
-    public String reportes = null;
-    Bundle bundle = new Bundle();
-    NewReport newReport = new NewReport();
-    static  String KEY_UES = "uesList";
-    static  String KEY_REPORTS = "reportsList";
+    protected  TaskResult delegate = null;
 
 
+    public HttpGet(Context context, TaskResult delegate) {
 
-    public HttpGet(Context context) {
         this.context = context;
+        this.delegate = delegate;
     }
 
     @Override
@@ -51,15 +47,6 @@ public class HttpGet extends AsyncTask<String, Void, String> {
             connection.setRequestMethod("GET");
             connection.setDoInput(true);
             connection.connect();
-
-            if(params[2] == "get_ues"){
-                ues = params[2];
-            }
-
-            if(params[2] == "get_reportes"){
-                reportes = params[2];
-            }
-
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder sb = new StringBuilder();
@@ -78,24 +65,17 @@ public class HttpGet extends AsyncTask<String, Void, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
     @Override
     protected void onPostExecute(String resultado) {
+        super.onPostExecute(resultado);
+        delegate.onSuccess(resultado);
+    }
 
-        if (ues != null){
-            bundle.putString(KEY_UES,resultado);
-            newReport.setArguments(bundle);
-        }
-
-        if(reportes != null){
-            bundle.putString(KEY_REPORTS,resultado);
-            newReport.setArguments(bundle);
-        }
-
-
+    /** Interfaz para setear el resultado */
+    public   interface TaskResult{
+        void onSuccess(String result);
     }
 }

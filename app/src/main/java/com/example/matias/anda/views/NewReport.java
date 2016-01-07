@@ -21,6 +21,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,6 +54,10 @@ import android.app.ProgressDialog;
 
 import android.support.design.widget.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class NewReport extends Fragment implements View.OnClickListener, OnMapReadyCallback{
 
@@ -79,7 +85,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     public String dir;
     Uri outputFileUri;
     String pathToImage;
-    static  String GET_UES = "get_ues";
+
+
     /** Constructor */
     public NewReport(){
 
@@ -113,24 +120,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
             setUpMap();
-/*
-            // create marker
-            MarkerOptions marker = new MarkerOptions().position(
-                    new LatLng(tracker.getLatitude(), tracker.getLongitude())).title("Hello Maps");
 
-            // Changing marker icon
-            marker.icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-            // adding marker
-            googleMap.addMarker(marker);
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(latDob, lonDob)).zoom(12).build();
-            googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-
-            // Perform any camera updates here
-            */
         }
 
     }
@@ -190,14 +180,13 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             // Get para el combobox con UES
             getUniversidades();
 
-
-
             et_contenido = (EditText) getView().findViewById(R.id.contenido_newreport);
             btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_capture);
             btn_ok = (FloatingActionButton) getView().findViewById(R.id.btn_ok_newreport);
             foto = (ImageView) getView().findViewById(R.id.iv_foto);
             btn_capture.setOnClickListener(this);
             btn_ok.setOnClickListener(this);
+
             flag = 0;
         }
     }//End onResume
@@ -318,18 +307,54 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
 
     private void getUniversidades() {
 
+            new HttpGet(getActivity().getApplicationContext(),
+                    new HttpGet.TaskResult() {
+                        @Override
+                        public void onSuccess(String result) {
+                            System.out.println("NR == "+result);
+                            addtoCombobox(result);
 
-            HttpGet h = new HttpGet(getActivity().getApplicationContext());
-            h.execute(URL_UES, auth_token, GET_UES);
+                        }
+                    }).execute(URL_UES, auth_token);
             //
-            String uesList = (String) getArguments().get("uesList");
-            System.out.println("UesList: "+uesList);
-
-
-
-
-
     }
+
+    private void addtoCombobox(String listaUes) {
+
+        int dftIndex = 0;
+
+        try {
+            JSONArray ja =  new JSONArray(listaUes);
+            String[] result = new String[ja.length()];
+            String uni;
+            for(int i=0;i< ja.length();i++){
+                JSONObject row = ja.getJSONObject(i);
+                uni = " " + row.get("nombre") + " " + row.getString("id");
+                result[i] = uni;
+
+                if(ja.getJSONObject(i).getString("nombre").equalsIgnoreCase("Kristinehamn")){
+                    dftIndex = i;
+                }
+            }
+
+
+
+
+            Spinner spinner = (Spinner) getView().findViewById(R.id.spinner_ues);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.context,android.R.layout.simple_spinner_item,
+                    result);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }// END NewReport
