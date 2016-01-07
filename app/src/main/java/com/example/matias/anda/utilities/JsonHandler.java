@@ -68,7 +68,7 @@ public class JsonHandler {
         return null;
     }
 
-    public String getNewReport(String contenido, String foto, String id, String latitud, String longitud){
+    public String getNewReport(String contenido, String foto, String id, String latitud, String longitud, String idUniversidad){
         String resultado;
 
         // Formatear la fecha
@@ -83,7 +83,7 @@ public class JsonHandler {
             json.put("foto",foto);
             json.put("latitud",latitud);
             json.put("longitud",longitud);
-            json.put("idUniversidad","20");
+            json.put("idUniversidad",idUniversidad);
             json.put("idUsuario",id);
             json.put("solucionado","0");
             json.put("validado","0");

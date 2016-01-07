@@ -48,6 +48,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
@@ -85,7 +87,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     public String dir;
     Uri outputFileUri;
     String pathToImage;
-
+    Spinner spinner;
+    Map<String, String> universidades = new HashMap<>();
 
     /** Constructor */
     public NewReport(){
@@ -268,9 +271,12 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    String idUniversidad = universidades.get(spinner.getSelectedItem());
+                    System.out.println("Universidad seleccionada: " + spinner.getSelectedItem() + ", ID: " + idUniversidad +"\n");
+                    //Llega la foto
                     JsonHandler jsonHandler = new JsonHandler();
                     jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
-                            resultado.toString(), id, latitud, longitud);
+                            resultado.toString(), id, latitud, longitud, idUniversidad);
                     SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
                     if (new SystemUtilities(getActivity().getApplicationContext()).isNetworkAvailable()) {
                         new HttpPost(getActivity().getApplicationContext(),
@@ -328,7 +334,8 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             String uni;
             for(int i=0;i< ja.length();i++){
                 JSONObject row = ja.getJSONObject(i);
-                uni = " " + row.get("nombre") + " " + row.getString("id");
+                uni = (String) row.get("nombre")/* + " " + row.getString("id")*/;
+                this.universidades.put((String )row.get("nombre"),  row.getString("id"));
                 result[i] = uni;
 
                 if(ja.getJSONObject(i).getString("nombre").equalsIgnoreCase("Kristinehamn")){
@@ -336,16 +343,12 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                 }
             }
 
-
-
-
-            Spinner spinner = (Spinner) getView().findViewById(R.id.spinner_ues);
+            this.spinner = (Spinner) getView().findViewById(R.id.spinner_ues);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.context,android.R.layout.simple_spinner_item,
                     result);
 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-
 
 
         } catch (JSONException e) {
