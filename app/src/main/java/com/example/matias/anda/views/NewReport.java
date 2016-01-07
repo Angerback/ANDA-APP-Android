@@ -311,7 +311,6 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                     new HttpGet.TaskResult() {
                         @Override
                         public void onSuccess(String result) {
-                            System.out.println("NR == "+result);
                             addtoCombobox(result);
 
                         }

@@ -64,13 +64,26 @@ public class ViewReports extends Fragment {
 
 
 
-        //HttpGet getReports = new HttpGet(getActivity().getApplicationContext());
-
-
+        new HttpGet(getActivity().getApplicationContext(), new HttpGet.TaskResult() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("VR == "+result);
+                prepararListaReportes(result);
+            }
+        }).execute(URL_GET,auth_token);
 
 
     }
 
+    private void prepararListaReportes(String jsonReportes) {
+
+
+        // Hacer el String[] para luego mostrarlo en un listView
+
+
+        
+
+    }
 
 
 }
