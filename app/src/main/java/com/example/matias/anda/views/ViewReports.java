@@ -46,7 +46,7 @@ public class ViewReports extends Fragment {
 
     }
 
-
+    /** Método que se ejecuta cuando se crea la vista del fragmento */		
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class ViewReports extends Fragment {
         return inflater.inflate(R.layout.fragment_view_reports, container, false);
     }
 
-
+    /** Método que se ejecuta una vez creada la vista */
     @Override
     public void onResume() {
         super.onResume();
@@ -79,6 +79,7 @@ public class ViewReports extends Fragment {
 
     }
 
+/** Metodo para preparar la lista que se mostrara en el listview */
     private void prepararListaReportes(String jsonReportes) {
 
 
