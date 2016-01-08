@@ -20,6 +20,10 @@ import com.example.matias.anda.controllers.HttpGet;
 import com.example.matias.anda.utilities.JsonHandler;
 import com.example.matias.anda.utilities.SystemUtilities;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -78,10 +82,29 @@ public class ViewReports extends Fragment {
     private void prepararListaReportes(String jsonReportes) {
 
 
-        // Hacer el String[] para luego mostrarlo en un listView
+        try {
+            JSONArray jsonArray = new JSONArray(jsonReportes);
+            String[] jsonReportList =  new String[jsonArray.length()];
+
+            for(int i = 0; i < jsonArray.length(); i++) {
+                String report = jsonArray.getJSONObject(i).getString("contenido");
+                jsonReportList[i] = report;
+            }
+            // Hacer el String[] para luego mostrarlo en un listView
 
 
-        
+            ListView listReports = (ListView) getActivity().findViewById(R.id.listViewReports);
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, jsonReportList);
+
+            listReports.setAdapter(arrayAdapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
 
     }
 

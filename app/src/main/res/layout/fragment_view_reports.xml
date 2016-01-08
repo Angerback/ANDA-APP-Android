@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="500dp"
@@ -8,12 +8,24 @@
     tools:context="com.example.matias.anda.views.ViewReports"
     android:background="#c7e2f0">
 
+<!--
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView" >
+        -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <TextView
-        android:layout_width="205dp"
-        android:layout_height="186dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="VISTA PRINCIPAL, VER REPORTES "
-        android:id="@+id/textView20"
-        android:layout_gravity="center" />
-</FrameLayout>
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/listViewReports"
+                android:layout_gravity="center_horizontal|bottom" />
+        </LinearLayout>
+
+    <!--</ScrollView>-->
+
+</LinearLayout>
+
