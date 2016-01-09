@@ -2,6 +2,7 @@ package com.example.matias.anda.views;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,8 +12,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.matias.anda.R;
@@ -24,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,13 +45,14 @@ public class ViewReports extends Fragment {
 
     static final String URL_GET = "http://pliskin12.ddns.net:8080/taller-bd-11/reportes/rango/0/9";
 
+    private ArrayList<String[]> reportsDetail = new ArrayList<>();
 
     /** Constructor */
     public ViewReports(){
 
     }
 
-    /** Método que se ejecuta cuando se crea la vista del fragmento */		
+    /** Metodo que se ejecuta cuando se crea la vista del fragmento */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class ViewReports extends Fragment {
         return inflater.inflate(R.layout.fragment_view_reports, container, false);
     }
 
-    /** Método que se ejecuta una vez creada la vista */
+    /** Metodo que se ejecuta una vez creada la vista */
     @Override
     public void onResume() {
         super.onResume();
@@ -85,25 +91,47 @@ public class ViewReports extends Fragment {
 
         try {
             JSONArray jsonArray = new JSONArray(jsonReportes);
-            String[] jsonReportList =  new String[jsonArray.length()];
 
+            final String[] jsonReportList =  new String[jsonArray.length()];
+
+            // Hacer el String[] para luego mostrarlo en un listView
             for(int i = 0; i < jsonArray.length(); i++) {
                 String report = jsonArray.getJSONObject(i).getString("contenido");
                 jsonReportList[i] = report;
             }
-            // Hacer el String[] para luego mostrarlo en un listView
-
 
             ListView listReports = (ListView) getActivity().findViewById(R.id.listViewReports);
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, jsonReportList);
 
             listReports.setAdapter(arrayAdapter);
+
+            /** Se escucha el click de la lista y se muestra el detalle del reporte*/
+            listReports.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    String item = (String)parent.getItemAtPosition(position);
+
+                    /** mensaje que muestra solo el contenido del reporte*/
+                    Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
+
+                    /** se muestra el fragmento con el detalle del reporte*/
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    ReportDetail reportsDetail = new ReportDetail();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", auth_token);
+                    reportsDetail.setArguments(bundle);
+                    transaction.replace(R.id.reports_container, reportsDetail);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
 
 

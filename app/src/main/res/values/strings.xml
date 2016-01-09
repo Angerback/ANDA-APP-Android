@@ -34,5 +34,7 @@
     <string name="myrepots">Mis Reportes</string>
     <string name="cerrarsesion">Cerrar Sesión</string>
     <string name="select_u">Universidad</string>
+    <string name="contenido">Contenido:</string>
+    <string name="void_string" />
 
 </resources>
