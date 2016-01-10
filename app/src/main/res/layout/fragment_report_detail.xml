@@ -3,26 +3,60 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/Imagen_detail"
+        android:id="@+id/TV_image_detail"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="left"/>
+
+    <ImageView
+        android:id="@+id/foto_report_detail"
+        android:layout_width="match_parent"
+        android:background="#AADCDCDC"
+        android:layout_height="100dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/map_detail"
+        android:id="@+id/TV_map_detail"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"/>
+
+    <com.google.android.gms.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapView_report_detail"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#AADCDCDC"
+        android:layout_below="@+id/foto_report_detail"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/contenido"
+        android:id="@+id/report_detail__contenido"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/contenido"
-            android:id="@+id/report_detail__contenido"
-            android:layout_gravity="left"/>
+        android:text="@string/void_string"
+        android:id="@+id/report_detail_primero"
+        android:layout_gravity="left|bottom"
+        android:background="#AADCDCDC"
+        android:layout_marginLeft="10dp" />
 
-        <TextView
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:text="@string/void_string"
-            android:id="@+id/report_detail_primero"
-            android:layout_gravity="left|bottom"
-            android:layout_marginLeft="10dp" />
 
-    </LinearLayout>
 
 </LinearLayout>

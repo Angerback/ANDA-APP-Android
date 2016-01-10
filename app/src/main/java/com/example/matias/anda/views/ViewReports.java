@@ -92,17 +92,35 @@ public class ViewReports extends Fragment {
         try {
             JSONArray jsonArray = new JSONArray(jsonReportes);
 
-            final String[] jsonReportList =  new String[jsonArray.length()];
+            final String[] contenido_report =  new String[jsonArray.length()];
+            final String[] imagen_report =  new String[jsonArray.length()];
+            final String[] latitud_report =  new String[jsonArray.length()];
+            final String[] longitud_report =  new String[jsonArray.length()];
+            final String[] universidad_report =  new String[jsonArray.length()];
 
             // Hacer el String[] para luego mostrarlo en un listView
             for(int i = 0; i < jsonArray.length(); i++) {
+
                 String report = jsonArray.getJSONObject(i).getString("contenido");
-                jsonReportList[i] = report;
+                contenido_report[i] = report;
+
+                String imagen_detail = jsonArray.getJSONObject(i).getString("foto");
+                imagen_report[i] = imagen_detail;
+
+                String latitud_detail = jsonArray.getJSONObject(i).getString("latitud");
+                latitud_report[i] = latitud_detail;
+
+                String longitud_detail = jsonArray.getJSONObject(i).getString("longitud");
+                longitud_report[i] = longitud_detail;
+
+                String universidad_detail = jsonArray.getJSONObject(i).getString("longitud");
+                universidad_report[i] = universidad_detail;
+
             }
 
             ListView listReports = (ListView) getActivity().findViewById(R.id.listViewReports);
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, jsonReportList);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
 
             listReports.setAdapter(arrayAdapter);
 
@@ -112,14 +130,23 @@ public class ViewReports extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     String item = (String)parent.getItemAtPosition(position);
+                    Bundle bundle = new Bundle();
 
                     /** mensaje que muestra solo el contenido del reporte*/
                     Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
 
+                    /** se captan los valores de los elementos del reporte seleccionado*/
+                    bundle.putString("contenido", contenido_report[position]);
+                    bundle.putString("imagen", imagen_report[position]);
+                    bundle.putString("latitud", latitud_report[position]);
+                    bundle.putString("longitud", longitud_report[position]);
+                    bundle.putString("idUniversidad", universidad_report[position]);
+
+
                     /** se muestra el fragmento con el detalle del reporte*/
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     ReportDetail reportsDetail = new ReportDetail();
-                    Bundle bundle = new Bundle();
+
                     bundle.putString("key", auth_token);
                     reportsDetail.setArguments(bundle);
                     transaction.replace(R.id.reports_container, reportsDetail);

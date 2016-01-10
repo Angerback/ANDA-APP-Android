@@ -36,5 +36,7 @@
     <string name="select_u">Universidad</string>
     <string name="contenido">Contenido:</string>
     <string name="void_string" />
+    <string name="Imagen_detail">Imagen del reporte</string>
+    <string name="map_detail">Ubicación del reporte</string>
 
 </resources>
