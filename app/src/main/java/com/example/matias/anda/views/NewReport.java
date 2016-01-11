@@ -43,6 +43,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
@@ -89,6 +90,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
     String pathToImage;
     Spinner spinner;
     Map<String, String> universidades = new HashMap<>();
+    Marker mMarker;
 
     /** Constructor */
     public NewReport(){
@@ -108,10 +110,12 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
         if (!tracker.canGetLocation()) {
             tracker.showSettingsAlert();
         } else {
+            /*
             latDob = tracker.getLatitude();
             lonDob = tracker.getLongitude();
             latitud = Double.toString(latDob);
             longitud = Double.toString(lonDob);
+            */
             googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             googleMap.setMyLocationEnabled(true);
             googleMap.setTrafficEnabled(true);
@@ -122,6 +126,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                     .target(new LatLng(latDob, lonDob)).zoom(17).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
+            googleMap.setOnMyLocationChangeListener(myLocationChangeListener);
             setUpMap();
 
         }
@@ -276,7 +281,7 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                     //Llega la foto
                     JsonHandler jsonHandler = new JsonHandler();
                     jsonobject = jsonHandler.getNewReport(et_contenido.getText().toString(),
-                            resultado.toString(), id, latitud, longitud, idUniversidad);
+                            resultado.toString(), id, Double.toString(latDob), Double.toString(lonDob), idUniversidad);
                     SystemUtilities su = new SystemUtilities(getActivity().getApplicationContext());
                     if (new SystemUtilities(getActivity().getApplicationContext()).isNetworkAvailable()) {
                         new HttpPost(getActivity().getApplicationContext(),
@@ -298,9 +303,11 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
                     }
                     break;
                 case 1:
+                    /*
                     latDob = tracker.getLatitude();
                     lonDob = tracker.getLongitude();
-                    setUpMap();
+                    setUpMap();*/
+
                     break;
                 case 2:
 
@@ -355,6 +362,19 @@ public class NewReport extends Fragment implements View.OnClickListener, OnMapRe
             e.printStackTrace();
         }
     }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            latDob = location.getLatitude();
+            lonDob = location.getLongitude();
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            //mMarker = googleMap.addMarker(new MarkerOptions().position(loc));
+            if(googleMap != null){
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 17.0f));
+            }
+        }
+    };
 
 
 
