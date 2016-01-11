@@ -1,42 +1,28 @@
 package com.example.matias.anda.views;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.matias.anda.R;
-import com.example.matias.anda.utilities.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-
-public class ReportDetail extends Fragment implements OnMapReadyCallback {
-
+/**
+ * Created by Lalan on 11-01-2016.
+ */
+public class MyReportDetail extends Fragment implements OnMapReadyCallback{
     ImageView foto;
 
     /**variables para el mapa*/
@@ -45,28 +31,29 @@ public class ReportDetail extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     private GoogleMap googleMap;
 
-    /**#####################################################################################################*/
-    public ReportDetail(){
+    public MyReportDetail(){
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_report_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_report_detail, container, false);
         Bundle bundle = getArguments();
 
-        ((TextView) v.findViewById(R.id.report_detail_primero)).setText(bundle.getString("contenido"));
+        ((TextView) v.findViewById(R.id.contenido_my_report_detail)).setText(bundle.getString("contenido"));
 
-        mMapView = (MapView) v.findViewById(R.id.mapView_report_detail);
+        mMapView = (MapView) v.findViewById(R.id.mapView_my_report_detail);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.getMapAsync(this);
 
-    return v;
+        return v;
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         this.googleMap = googleMap;
 
         latitud = Double.parseDouble(getArguments().getString("latitud"));
@@ -82,7 +69,6 @@ public class ReportDetail extends Fragment implements OnMapReadyCallback {
                 .target(posicion).zoom(18).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-
     }
 
     @Override
@@ -92,7 +78,7 @@ public class ReportDetail extends Fragment implements OnMapReadyCallback {
         String key = getArguments().getString("key");
 
         /**imagen*/
-        foto = (ImageView) getView().findViewById(R.id.foto_report_detail);
+        foto = (ImageView) getView().findViewById(R.id.foto_my_report_detail);
         /** muestra la imagen en el imageview*/
         Picasso.with(this.getActivity()).load(getArguments().getString("imagen")).into(foto);
     }
@@ -103,11 +89,6 @@ public class ReportDetail extends Fragment implements OnMapReadyCallback {
         mMapView.onPause();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -115,9 +96,4 @@ public class ReportDetail extends Fragment implements OnMapReadyCallback {
         mMapView.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }
 }
