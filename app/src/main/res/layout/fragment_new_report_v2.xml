@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fondoNaranjo"
     android:orientation="vertical">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView" >
 
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <!--agregar a imagen y probar variantes android:scaleType="fitCenter"-->
     <ImageView
         android:id="@+id/iv_foto"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-0dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="right"
+                android:src="@drawable/photo33"
+                />
+
     <com.google.android.gms.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/iv_foto"
         android:layout_above="@+id/contenido_text" />
 
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btn_capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/iv_foto"
-        android:layout_marginBottom="-32dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/photo33"
-        />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,6 +74,9 @@
         android:src="@drawable/upload119"
         android:elevation="6dp"
 
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+
         android:translationZ="12dp"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/btn_capture"
@@ -71,6 +90,7 @@
         android:layout_below="@+id/contenido_newreport"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+        </LinearLayout>
+    </ScrollView>
 
-
-</RelativeLayout>
+</LinearLayout>

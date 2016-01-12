@@ -3,21 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="500dp"
     android:paddingLeft="10dp"
+    android:background="@color/fondoNaranjo"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    tools:context="com.example.matias.anda.views.MyReports"
-    android:background="#c7e2f0">
+    tools:context="com.example.matias.anda.views.MyReports">
 
 
-    <LinearLayout
+    <ListView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/listViewMyReports"
+        android:layout_gravity="center_horizontal|bottom" />
 
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/listViewMyReports"
-            android:layout_gravity="center_horizontal|bottom" />
-    </LinearLayout>
 
 </LinearLayout>

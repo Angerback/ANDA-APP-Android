@@ -5,8 +5,8 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    tools:context="com.example.matias.anda.views.ViewReports"
-    android:background="#c7e2f0">
+    android:background="@color/fondoNaranjo"
+    tools:context="com.example.matias.anda.views.ViewReports">
 
 <!--
     <ScrollView

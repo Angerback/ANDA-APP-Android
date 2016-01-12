@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.matias.anda.views.Register"
     android:orientation="vertical"
-    android:background="#AADCDCDC"
+    android:background="@color/fondoNaranjo"
     android:padding="10dp"
     >
 
@@ -78,7 +78,7 @@
         android:orientation="horizontal">
         <TextView
             android:text="@string/email"
-            android:layout_width="86dp"
+            android:layout_width="82dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textColor="#000000"
@@ -101,7 +101,7 @@
         android:orientation="horizontal">
         <TextView
             android:text="@string/nickname"
-            android:layout_width="110dp"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textColor="#000000"
