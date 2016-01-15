@@ -101,7 +101,15 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Editar"
+                android:id="@+id/btn_editar"
+                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

@@ -70,13 +70,5 @@ public class HttpPut extends AsyncTask<String, Void, String>{
 
 
 
-//ReportsDetail
-
-// Obtener el key enviado desde la clase Reports
-/*
-String key = getArguments().getString("key");
-JsonHandler jh = new JsonHandler();
-id = jh.getValor(key, "idUsuario");
-auth_token = jh.getValor(key, "auth_token");*/
 
 

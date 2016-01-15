@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import org.json.JSONException;
  */
 public class MyReports extends Fragment {
 
+    JSONArray jsoncompleto;
     Context context;
     String URL_GET =
             "http://pliskin12.ddns.net:8080/taller-bd-11/usuarios/";
@@ -73,8 +75,8 @@ public class MyReports extends Fragment {
 
     private void manejarMisReportes(String result) {
         try {
-            JSONArray jsonArray1 = new JSONArray(result);
-            JSONArray jsonArray = new JSONArray();
+             JSONArray jsonArray1 = new JSONArray(result);
+            final JSONArray jsonArray = new JSONArray();
             for(int i = jsonArray1.length()-1; i >= 0 ; i--){
                 jsonArray.put(jsonArray1.get(i));
             }
@@ -84,6 +86,13 @@ public class MyReports extends Fragment {
             final String[] latitud_report =  new String[jsonArray.length()];
             final String[] longitud_report =  new String[jsonArray.length()];
             final String[] universidad_report =  new String[jsonArray.length()];
+            final String[] id_reporte =  new String[jsonArray.length()];
+            final String[] id_usuario =  new String[jsonArray.length()];
+            final String[] fecha_reporte =  new String[jsonArray.length()];
+
+
+
+
 
             // Hacer el String[] para luego mostrarlo en un listView
 
@@ -101,8 +110,20 @@ public class MyReports extends Fragment {
                 String longitud_detail = jsonArray.getJSONObject(i).getString("longitud");
                 longitud_report[i] = longitud_detail;
 
-                String universidad_detail = jsonArray.getJSONObject(i).getString("longitud");
+                String universidad_detail = jsonArray.getJSONObject(i).getString("idUniversidad");
                 universidad_report[i] = universidad_detail;
+
+                String idreporte = jsonArray.getJSONObject(i).getString("idReporte");
+                id_reporte[i] = idreporte;
+
+                String idusuario = jsonArray.getJSONObject(i).getString("idUsuario");
+                id_usuario[i] = idusuario;
+
+                String fechareporte = jsonArray.getJSONObject(i).getString("fecha");
+                fecha_reporte[i] =fechareporte;
+
+
+
 
             }
 
@@ -128,13 +149,17 @@ public class MyReports extends Fragment {
                     bundle.putString("imagen", imagen_report[position]);
                     bundle.putString("latitud", latitud_report[position]);
                     bundle.putString("longitud", longitud_report[position]);
-                    bundle.putString("idUniversidad", universidad_report[position]);
+                    bundle.putString("idreporte", id_reporte[position]);
+                    bundle.putString("idusuario", id_usuario[position]);
+                    bundle.putString("fecha", fecha_reporte[position]);
+                    bundle.putString("iduniversidad", universidad_report[position]);
+
+
 
 
                     /** se muestra el fragmento con el detalle del reporte*/
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     MyReportDetail myReportsDetail = new MyReportDetail();
-
                     bundle.putString("key", auth_token);
                     myReportsDetail.setArguments(bundle);
                     transaction.replace(R.id.reports_container, myReportsDetail);
