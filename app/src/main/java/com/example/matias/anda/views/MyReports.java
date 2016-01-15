@@ -73,7 +73,11 @@ public class MyReports extends Fragment {
 
     private void manejarMisReportes(String result) {
         try {
-            JSONArray jsonArray = new JSONArray(result);
+            JSONArray jsonArray1 = new JSONArray(result);
+            JSONArray jsonArray = new JSONArray();
+            for(int i = jsonArray1.length()-1; i >= 0 ; i--){
+                jsonArray.put(jsonArray1.get(i));
+            }
 
             final String[] contenido_report =  new String[jsonArray.length()];
             final String[] imagen_report =  new String[jsonArray.length()];
@@ -82,6 +86,7 @@ public class MyReports extends Fragment {
             final String[] universidad_report =  new String[jsonArray.length()];
 
             // Hacer el String[] para luego mostrarlo en un listView
+
             for(int i = 0; i < jsonArray.length(); i++) {
 
                 String report = jsonArray.getJSONObject(i).getString("contenido");

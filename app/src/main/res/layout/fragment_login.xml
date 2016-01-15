@@ -5,47 +5,24 @@
     android:layout_height="match_parent"
     tools:context="com.example.matias.anda.views.Login"
     android:orientation="vertical"
-    android:background="#AADCDCDC"
+    android:background="@color/fondoNaranjo"
     android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_login"
-            android:id="@+id/textView7"
-            android:textSize="30dp"
-            android:gravity="center"
-            android:textStyle="italic"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:textColor="#000000"
-            android:layout_centerHorizontal="true" />
-    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/NickName_text"
-            android:textSize="20dp"
-            android:textColor="#000000"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/textView" />
 
 
     <EditText
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#DCDCDC"
+        android:hint="@string/NickName_text"
         android:layout_marginLeft="0dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/et_login_nick" />
 
     </LinearLayout>
@@ -54,25 +31,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pass_text"
-            android:textSize="20dp"
-            android:textColor="#000000"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/textView2" />
+
 
         <EditText
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:inputType="textPassword"
             android:ems="10"
             android:layout_marginTop="20dp"
             android:background="#DCDCDC"
-            android:layout_marginLeft="5dp"
+            android:hint="@string/pass_text"
+            android:layout_marginLeft="0dp"
             android:id="@+id/et_login_pass" />
     </LinearLayout>
 
@@ -87,8 +56,8 @@
             android:id="@+id/cb_remember"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="36dp"
-            android:background="#AADCDCDC"
+            android:layout_marginLeft="0dp"
+
             android:padding="10dip"
             android:layout_alignLeft="@+id/btn_login_iniciarsesion"
             android:layout_alignStart="@+id/btn_login_iniciarsesion"
@@ -101,18 +70,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <Button
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar"
+            android:text="Iniciar Sesión"
             android:id="@+id/btn_login_iniciarsesion"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:textColor="#000000"
             android:textSize="20dp"
             android:background="#DCDCDC"
-            android:padding="26dip"
+            android:padding="18dip"
             android:textStyle="bold"
-            android:layout_marginLeft="37dp"
+            android:layout_marginLeft="0dp"
             android:layout_centerHorizontal="true" />
 
     </LinearLayout>
