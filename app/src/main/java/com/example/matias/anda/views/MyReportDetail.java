@@ -29,6 +29,7 @@ public class MyReportDetail extends Fragment implements OnMapReadyCallback, View
     ImageView foto;
     Button boton_editar;
     String contenido;
+    String auth_token;
 
 
     /**
@@ -55,6 +56,10 @@ public class MyReportDetail extends Fragment implements OnMapReadyCallback, View
         mMapView.onCreate(savedInstanceState);
 
         mMapView.getMapAsync(this);
+
+        // Obtener el auth_token
+        auth_token  = getArguments().getString("key");
+
 
 
 
@@ -125,7 +130,7 @@ public class MyReportDetail extends Fragment implements OnMapReadyCallback, View
                 bundle1.putString("idusuario1", getArguments().getString("idusuario"));
                 bundle1.putString("fecha1", getArguments().getString("fecha"));
                 bundle1.putString("iduniversidad1", getArguments().getString("iduniversidad"));
-
+                bundle1.putString("key", auth_token);
 
 
                 EditReport editReport = new EditReport();

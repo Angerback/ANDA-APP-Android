@@ -38,5 +38,6 @@
     <string name="void_string" />
     <string name="Imagen_detail">Imagen del reporte</string>
     <string name="map_detail">Ubicación del reporte</string>
+    <string name="hello_blank_fragment">asdasdsad</string>
 
 </resources>

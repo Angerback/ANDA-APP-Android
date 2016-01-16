@@ -143,4 +143,40 @@ public class JsonHandler {
 
     }
 
+    public String editReport(String contenido, String foto, String id_usuario, String latitud, String longitud, String idUniversidad, String fecha){
+
+        String resultado;
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("contenido",contenido);
+            json.put("fecha",fecha );
+            json.put("foto",foto );
+            json.put("latitud",latitud );
+            json.put("longitud", longitud);
+            json.put("idUniversidad",idUniversidad);
+            json.put("idUsuario",id_usuario);
+            json.put("solucionado","0");
+            json.put("validado", "0");
+            json.put("visible", "1");
+            resultado = json.toString();
+            return resultado;
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        return null;
+    }
+
+
+
+
 }

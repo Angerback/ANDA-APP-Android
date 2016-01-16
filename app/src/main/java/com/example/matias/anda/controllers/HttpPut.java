@@ -1,5 +1,6 @@
 package com.example.matias.anda.controllers;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -16,6 +17,18 @@ import java.net.URL;
  */
 public class HttpPut extends AsyncTask<String, Void, String>{
 
+
+    private Context context;
+    public AsyncResponse delegate = null;
+
+    public HttpPut(Context context, AsyncResponse delegate) {
+        this.context = context;
+        this.delegate = delegate;
+    }
+
+    public interface  AsyncResponse{
+        void processFinish(String output);
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -63,7 +76,17 @@ public class HttpPut extends AsyncTask<String, Void, String>{
             e.printStackTrace();
         }
 
-        return  null;
+        return  "null";
+
+    }
+
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
+        delegate.processFinish(s);
+
 
     }
 }
