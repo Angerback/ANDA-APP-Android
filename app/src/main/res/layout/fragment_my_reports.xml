@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="500dp"
     android:paddingLeft="10dp"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
     tools:context="com.example.matias.anda.views.MyReports">
@@ -13,6 +13,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/listViewMyReports"
+        android:divider="#995486a7"
+        android:dividerHeight="2dp"
         android:layout_gravity="center_horizontal|bottom" />
 
 

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:orientation="vertical">
     <ScrollView
         android:layout_width="fill_parent"
@@ -21,6 +21,9 @@
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
         />
 
@@ -40,6 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/iv_foto"
         android:layout_above="@+id/contenido_text" />
 
@@ -54,6 +60,9 @@
         android:textColor="#000000"
         android:text="Contenido"
         android:id="@+id/contenido_text"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_above="@+id/contenido_newreport"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -64,6 +73,9 @@
         android:id="@+id/contenido_newreport"
         android:layout_above="@+id/btn_ok_newreport"
         android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_alignParentStart="true" />
 
 
@@ -89,6 +101,7 @@
         android:prompt="@string/select_u"
         android:layout_below="@+id/contenido_newreport"
         android:layout_alignParentLeft="true"
+        android:textColor="#995486a7"
         android:layout_alignParentStart="true" />
         </LinearLayout>
     </ScrollView>

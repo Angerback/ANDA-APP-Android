@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="fondoNaranjo">#f05f40</color>
     <color name="blanco">#FFFFFF</color>
+    <color name="blancoOscuro">#ccffffff</color>
+    <color name="plomo">#ccffffff</color>
+    <color name="plomoOscuro">#ccffffff</color>
 </resources>

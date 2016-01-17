@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="130dp"
+
+    android:weightSum="1"
+    android:focusable="false"
+    android:maxHeight="0dp"
+    android:focusableInTouchMode="false">
+
+    <!--android:background="#9d9affa9"-->
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:adjustViewBounds="true"
+        android:background="#FF3a3aff"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:id="@+id/imagenLista" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignTop="@+id/imagenLista"
+        android:layout_toRightOf="@+id/imagenLista"
+        android:layout_toEndOf="@+id/imagenLista"
+        android:orientation="vertical"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_marginRight="5dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/void_string"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:textColor="#000000"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/universidadLista"
+            android:layout_gravity="top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/void_string"
+            android:id="@+id/contenidoLista"
+            android:layout_marginLeft="0dp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_gravity="top" />
+
+    </LinearLayout>
+</RelativeLayout>

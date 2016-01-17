@@ -129,7 +129,10 @@ public class MyReports extends Fragment {
 
             ListView listReports = (ListView) getActivity().findViewById(R.id.listViewMyReports);
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
+            //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
+
+            // adaptador especial, recibe el contexto, nombre universidad, contenido , imagen(URL)
+            ListaAdaptador arrayAdapter = new ListaAdaptador(this.getActivity(), universidad_report, contenido_report,imagen_report);
 
             listReports.setAdapter(arrayAdapter);
 

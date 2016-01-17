@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:layout_height="match_parent">
 
 
@@ -75,6 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="#AADCDCDC"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_below="@+id/mapa_report_detail"
                 />
 
@@ -97,15 +100,21 @@
                 android:text="@string/void_string"
                 android:id="@+id/contenido_my_report_detail"
                 android:layout_gravity="left|bottom"
-                android:background="#AADCDCDC"
+                android:backgroundTint="#AADCDCDC"
+                android:textColor="#995486a7"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Editar"
                 android:id="@+id/btn_editar"
+                android:backgroundTint="#3a3aff"
+                android:textColor="#eaeaea"
+                android:textSize="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

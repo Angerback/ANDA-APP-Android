@@ -5,47 +5,27 @@
     android:layout_height="match_parent"
     tools:context="com.example.matias.anda.views.Register"
     android:orientation="vertical"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:padding="10dp"
     >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/registro_text"
-        android:id="@+id/textView_registro"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:padding="12dip"
-        android:textColor="#000000"
-        android:background="#AADCDCDC"
-        android:textSize="30dp"
-        android:textStyle="italic"
-        android:textIsSelectable="false" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:text="@string/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:textSize="16dp"
-            android:textColor="#000000"
-            android:padding="12dip" />
 
         <EditText
+            android:hint="@string/name"
             android:id="@+id/etName_r"
-            android:layout_width="260dp"
+            android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
-            android:layout_height="25dp"
-            android:background="#AADCDCDC"
+            android:layout_height="50dp"
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
 
@@ -54,21 +34,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:text="@string/lastname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textColor="#000000"
-            android:textSize="16dp"
-            android:padding="12dip" />
 
         <EditText
+            android:hint="@string/lastname"
             android:id="@+id/etApellido_r"
-            android:layout_width="260dp"
+            android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
-            android:background="#AADCDCDC"
-            android:layout_height="25dp" />
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2"
+            android:layout_height="50dp" />
     </LinearLayout>
 
 
@@ -76,22 +51,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:text="@string/email"
-            android:layout_width="82dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textColor="#000000"
-            android:textSize="16dp"
-            android:padding="12dip" />
 
         <EditText
+            android:hint="@string/email"
             android:id="@+id/etEmail_r"
             android:inputType="textEmailAddress"
-            android:layout_width="260dp"
+            android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
-            android:background="#AADCDCDC"
-            android:layout_height="25dp" />
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2"
+            android:layout_height="50dp" />
     </LinearLayout>
 
 
@@ -99,21 +69,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:text="@string/nickname"
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textColor="#000000"
-            android:textSize="16dp"
-            android:padding="12dip" />
 
         <EditText
+            android:hint="@string/nickname"
             android:id="@+id/etNickname_r"
-            android:layout_width="241dp"
+            android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
-            android:background="#AADCDCDC"
-            android:layout_height="25dp" />
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2"
+            android:layout_height="50dp" />
     </LinearLayout>
 
 
@@ -121,22 +86,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:text="@string/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textColor="#000000"
-            android:textSize="16dp"
-            android:padding="12dip" />
 
         <EditText
+            android:hint="@string/password"
             android:id="@+id/etPassword_r"
-            android:layout_width="241dp"
+            android:layout_width="match_parent"
             android:inputType="textPassword"
             android:layout_marginBottom="10dp"
-            android:background="#AADCDCDC"
-            android:layout_height="25dp" />
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2"
+            android:layout_height="50dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -145,16 +105,16 @@
         android:orientation="vertical">
         <Button
             android:id="@+id/btn_registro"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Registrarse"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:padding="20dip"
-            android:textColor="#000000"
+            android:textColor="#eaeaea"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:background="#AA808080"/>
+            android:backgroundTint="#3a3aff"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -5,7 +5,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     tools:context="com.example.matias.anda.views.ViewReports">
 
 <!--
@@ -14,16 +14,14 @@
         android:layout_height="fill_parent"
         android:id="@+id/scrollView" >
         -->
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
 
             <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/listViewReports"
+                android:divider="#995486a7"
+                android:dividerHeight="2dp"
                 android:layout_gravity="center_horizontal|bottom" />
-        </LinearLayout>
 
     <!--</ScrollView>-->
 

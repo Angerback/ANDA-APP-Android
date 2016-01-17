@@ -29,7 +29,7 @@ dependencies {
     compile 'com.cloudinary:cloudinary-android:1.2.2'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
+    compile 'com.github.bumptech.glide:glide:3.6.1'
 
 
 }

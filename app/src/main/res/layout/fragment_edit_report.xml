@@ -1,23 +1,62 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.example.matias.anda.views.EditReport">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.matias.anda.views.EditReport">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <ImageView
+        android:id="@+id/edit_foto"
+        android:layout_width="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="200dp"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_imagen_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-0dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:src="@drawable/photo33"
+        />
+
+
     <EditText
-        android:layout_width="126dp"
-        android:layout_height="188dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/et_edit_contenido"
         android:layout_gravity="center_horizontal|top"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#995486a7"
+        android:hint="@string/contenido"
+        android:backgroundTint="#85a4a2a2"
+        android:textColorHint="#85a4a2a2"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/btn_edit_ok"
         android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:backgroundTint="#3a3aff"
+        android:textColor="#eaeaea"
+        android:textSize="20dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-</RelativeLayout>
+</LinearLayout>

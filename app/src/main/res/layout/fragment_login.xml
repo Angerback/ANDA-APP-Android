@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.matias.anda.views.Login"
     android:orientation="vertical"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:padding="10dp">
 
 
@@ -16,14 +16,16 @@
         android:orientation="horizontal">
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#DCDCDC"
-        android:hint="@string/NickName_text"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/et_login_nick" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/NickName_text"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/et_login_nick"
+            android:backgroundTint="#85a4a2a2"
+            android:textColor="#995486a7"
+            android:textColorHint="#85a4a2a2" />
 
     </LinearLayout>
 
@@ -39,10 +41,12 @@
             android:inputType="textPassword"
             android:ems="10"
             android:layout_marginTop="20dp"
-            android:background="#DCDCDC"
             android:hint="@string/pass_text"
             android:layout_marginLeft="0dp"
-            android:id="@+id/et_login_pass" />
+            android:id="@+id/et_login_pass"
+            android:backgroundTint="#85a4a2a2"
+            android:textColorHint="#85a4a2a2"
+            android:textColor="#995486a7" />
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +65,10 @@
             android:padding="10dip"
             android:layout_alignLeft="@+id/btn_login_iniciarsesion"
             android:layout_alignStart="@+id/btn_login_iniciarsesion"
-            android:checked="false" />
+            android:checked="false"
+
+            android:textColor="#995486a7"
+            android:backgroundTint="#43a4a2a2" />
     </LinearLayout>
 
 
@@ -76,13 +83,16 @@
             android:id="@+id/btn_login_iniciarsesion"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:textColor="#000000"
+            android:textColor="#eaeaea"
             android:textSize="20dp"
-            android:background="#DCDCDC"
             android:padding="18dip"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:layout_marginLeft="0dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#3a3aff"
+             />
+
+        <!--android:backgroundTint="#AADCDCDC"-->
 
     </LinearLayout>
 

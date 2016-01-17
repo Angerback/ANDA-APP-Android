@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -38,6 +38,8 @@
         android:layout_width="match_parent"
         android:background="#AADCDCDC"
         android:adjustViewBounds="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         />
@@ -73,6 +75,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="#AADCDCDC"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/mapa_report_detail"
         />
 
@@ -95,8 +99,10 @@
         android:text="@string/void_string"
         android:id="@+id/report_detail_primero"
         android:layout_gravity="left|bottom"
-        android:background="#AADCDCDC"
+        android:backgroundTint="#AADCDCDC"
+        android:textColor="#995486a7"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp" />
 
     </LinearLayout>

@@ -1,7 +1,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/fondoNaranjo"
+    android:background="@color/blancoOscuro"
     android:layout_height="match_parent">
 
     <ImageView
@@ -10,7 +10,7 @@
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/imagen_inicio"
         android:scaleType="fitStart"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/imagen6" />
 
     <RelativeLayout
@@ -31,9 +31,9 @@
             android:padding="18dip"
 
             android:textSize="20dp"
-            android:background="#AA808080"
+            android:backgroundTint="#3a3aff"
             android:textColor="#ffffffff"
-            android:layout_marginTop="290dp" />
+            android:layout_marginTop="240dp" />
 
         <Button
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
             android:id="@+id/btn_registrarse"
             android:padding="18dip"
             android:textSize="20dp"
-            android:background="#AA808080"
+            android:backgroundTint="#3a3aff"
             android:textColor="#ffffffff"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/btn_iniciarsesion"
@@ -51,18 +51,6 @@
             android:layout_alignLeft="@+id/btn_iniciarsesion"
             android:layout_alignStart="@+id/btn_iniciarsesion" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/bienvenido_text"
-            android:id="@+id/textView9"
-            android:gravity="center"
-            android:layout_marginTop="15dp"
-            android:padding="12dip"
-            android:background="#AADCDCDC"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 </FrameLayout>
