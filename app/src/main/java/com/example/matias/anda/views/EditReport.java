@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -17,12 +18,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.matias.anda.R;
+import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.controllers.HttpPut;
 import com.example.matias.anda.controllers.UploadCouldinary;
 import com.example.matias.anda.utilities.JsonHandler;
+import com.example.matias.anda.utilities.SystemUtilities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,7 +114,7 @@ public class EditReport extends Fragment implements View.OnClickListener{
 
 
                 pDialog = new ProgressDialog(getActivity());
-                pDialog.setMessage("Iniciando sesión...");
+                pDialog.setMessage("Subiendo foto...");
                 pDialog.setIndeterminate(false);
                 pDialog.setCancelable(false);
                 pDialog.show();
@@ -122,25 +126,7 @@ public class EditReport extends Fragment implements View.OnClickListener{
                         resultado = output;
                         System.out.println(resultado);
                     }
-                }).execute(pathToImage);
-
-                pDialog.dismiss();
-
-
-                String json;
-                JsonHandler jsonHandler = new JsonHandler();
-                json = jsonHandler.editReport(edit_contenido.getText().toString(),resultado.toString(),
-                        getArguments().getString("idusuario1"),getArguments().getString("latitud1"),
-                        getArguments().getString("longitud1"),getArguments().getString("iduniversidad1"),
-                        getArguments().getString("fecha1"));
-
-
-                new HttpPut(getActivity().getApplicationContext(), new HttpPut.AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) {
-                        System.out.println(output);
-                    }
-                }).execute(URL_PUT,json,auth_token);
+                }, this.myHandler).execute(pathToImage); //Se agrega el handler para esperar respuesta
 
                 break;
 
@@ -181,5 +167,35 @@ public class EditReport extends Fragment implements View.OnClickListener{
         }
     }// End onActivityResult
 
+    android.os.Handler myHandler = new android.os.Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    pDialog.dismiss();
+                    String json;
+                    JsonHandler jsonHandler = new JsonHandler();
+                    json = jsonHandler.editReport(edit_contenido.getText().toString(),resultado.toString(),
+                            getArguments().getString("idusuario1"),getArguments().getString("latitud1"),
+                            getArguments().getString("longitud1"),getArguments().getString("iduniversidad1"),
+                            getArguments().getString("fecha1"));
+
+
+                    new HttpPut(getActivity().getApplicationContext(), new HttpPut.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            System.out.println(output);
+                        }
+                    }).execute(URL_PUT,json,auth_token);
+
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+    };
 
 }
