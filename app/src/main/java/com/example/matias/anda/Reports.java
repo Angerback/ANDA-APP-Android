@@ -79,9 +79,13 @@ public class Reports extends AppCompatActivity {
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
-            case R.id.menu_main_cerrar_sesion:
+            case R.id.menu_reports_logout:
                 //Llamar al fragmento
-
+                Intent cerrar_sesion = new Intent(this, MainActivity.class);
+                cerrar_sesion.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                cerrar_sesion.putExtra("Exit me", false);
+                startActivity(cerrar_sesion);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
