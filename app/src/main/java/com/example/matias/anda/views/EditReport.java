@@ -2,11 +2,13 @@ package com.example.matias.anda.views;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -26,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,21 +37,20 @@ import java.io.File;
 public class EditReport extends Fragment implements View.OnClickListener{
 
 
-    String id;
+
     String auth_token;
     EditText edit_contenido;
     Button edit_ok;
     String URL_PUT =   "http://pliskin12.ddns.net:8080/taller-bd-11/reportes/edit/";
-
     FloatingActionButton btn_capture;
     ImageView foto;
-    public static int count=0;
+    public  int count=0;
     public String dir;
     Uri outputFileUri;
     static final int CAM_REQUEST = 1;
     String pathToImage;
-    String resultado = "null";
-
+    String resultado;
+    ProgressDialog pDialog;
 
     public EditReport() {
         // Required empty public constructor
@@ -64,34 +67,33 @@ public class EditReport extends Fragment implements View.OnClickListener{
         String id_reporte = (String) getArguments().get("idreporte1");
         URL_PUT = URL_PUT + id_reporte;
 
-
-/*        String str1 = getArguments().getString("contenido1");
-        System.out.println("edit " + str1);
-        System.out.println("edit " + getArguments().getString("imagen1"));
-        System.out.println("edit " + getArguments().getString("latitud1"));
-        System.out.println("edit " + getArguments().getString("longitud1"));
-        System.out.println("edit " + getArguments().getString("iduniversidad1"));
-        System.out.println("edit " + getArguments().getString("fecha1"));
-        System.out.println("edit " + getArguments().getString("idreporte1"));
-        System.out.println("edit " + getArguments().getString("idusuario1"));*/
-
-
         edit_ok = (Button)v.findViewById(R.id.btn_edit_ok);
         edit_ok.setOnClickListener(this);
+
+
+
+
+        //Se crea una carpeta "Anda" para guardar las fotos tomadas por la camara
+        dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Anda/Edit";
+        File newdir = new File(dir);
+        newdir.mkdirs();
+
+
         return v;
     }
 
 
     @Override
     public void onResume() {
-super.onResume();
+    super.onResume();
 
         edit_contenido = (EditText) getView().findViewById(R.id.et_edit_contenido);
 
         //para tomar la imagen nueva
         btn_capture = (FloatingActionButton) getView().findViewById(R.id.btn_imagen_edit);
-        foto = (ImageView) getView().findViewById(R.id.iv_foto);
+        foto = (ImageView) getView().findViewById(R.id.edit_foto);
         btn_capture.setOnClickListener(this);
+
 
 
 
@@ -102,22 +104,32 @@ super.onResume();
 
         switch (v.getId()){
 
-            case R.id.btn_edit_ok:
-                System.out.println("ENTROO LA MIERDA ?? ");
 
-                /**new UploadCouldinary(getActivity().getApplicationContext(),
-                        new UploadCouldinary.AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                resultado = output;
-                                System.out.println(resultado);
-                            }
-                        }, this.myHandler).execute(pathToImage
-                );*/
+            case R.id.btn_edit_ok:
+
+
+
+                pDialog = new ProgressDialog(getActivity());
+                pDialog.setMessage("Iniciando sesión...");
+                pDialog.setIndeterminate(false);
+                pDialog.setCancelable(false);
+                pDialog.show();
+
+                // Subir la imagen
+                new UploadCouldinary(getActivity().getApplicationContext(), new UploadCouldinary.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        resultado = output;
+                        System.out.println(resultado);
+                    }
+                }).execute(pathToImage);
+
+                pDialog.dismiss();
+
 
                 String json;
                 JsonHandler jsonHandler = new JsonHandler();
-                json = jsonHandler.editReport(edit_contenido.getText().toString(),getArguments().getString("imagen1"),
+                json = jsonHandler.editReport(edit_contenido.getText().toString(),resultado.toString(),
                         getArguments().getString("idusuario1"),getArguments().getString("latitud1"),
                         getArguments().getString("longitud1"),getArguments().getString("iduniversidad1"),
                         getArguments().getString("fecha1"));
@@ -132,8 +144,9 @@ super.onResume();
 
                 break;
 
-            case R.id.btn_capture:
+            case R.id.btn_imagen_edit:
 
+                System.out.println("CTM");
                 // Se incremente el contador cada vez que una foto es guardada, "1.jpg","2.jpg",...
                 count++;
                 String file = dir+count+".jpg";
@@ -143,7 +156,6 @@ super.onResume();
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(camera_intent, CAM_REQUEST);
 
-                break;
 
 
         }
@@ -162,10 +174,12 @@ super.onResume();
                 pathToImage = outputFileUri.getPath();
 
                 // muestra foto en imageview con el path de la imagen
-                Glide.with(this).load(pathToImage).centerCrop().into(foto);
+                //Glide.with(this).load(pathToImage).centerCrop().into(foto);
                 // Se muestra en pantalla como un bitmap
-                //foto.setImageBitmap(BitmapFactory.decodeFile(pathToImage));
+                foto.setImageBitmap(BitmapFactory.decodeFile(pathToImage));
             }
         }
     }// End onActivityResult
+
+
 }

@@ -59,7 +59,10 @@ public class MyReportDetail extends Fragment implements OnMapReadyCallback, View
 
         // Obtener el auth_token
         auth_token  = getArguments().getString("key");
-
+        /**imagen*/
+        foto = (ImageView) v.findViewById(R.id.foto_my_report_detail);
+        /** muestra la imagen en el imageview*/
+        Picasso.with(this.getActivity()).load(getArguments().getString("imagen")).into(foto);
 
 
 
@@ -95,10 +98,7 @@ public class MyReportDetail extends Fragment implements OnMapReadyCallback, View
 
         boton_editar = (Button) getView().findViewById(R.id.btn_editar);
         boton_editar.setOnClickListener(this);
-        /**imagen*/
-        foto = (ImageView) getView().findViewById(R.id.foto_my_report_detail);
-        /** muestra la imagen en el imageview*/
-        Picasso.with(this.getActivity()).load(getArguments().getString("imagen")).into(foto);
+
     }
 
     @Override

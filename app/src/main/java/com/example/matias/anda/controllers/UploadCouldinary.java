@@ -27,11 +27,19 @@ public class UploadCouldinary extends AsyncTask<String,Void,String> {
         void processFinish(String output);
     }
 
+    public UploadCouldinary(Context context, AsyncResponse delegate) {
+        this.delegate = delegate;
+        this.context = context;
+
+    }
+
     public UploadCouldinary(Context context, AsyncResponse delegate, Handler handler1) {
         this.handler = handler1;
         this.context = context;
         this.delegate = delegate;
     }
+
+
 
     @Override
     protected void onPreExecute() {
