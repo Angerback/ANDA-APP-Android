@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +86,12 @@ public class ViewReports extends Fragment {
 
 
     }
-
+    String[] contenido_report ;
+    String[] imagen_report ;
+    String[] latitud_report ;
+    String[] longitud_report;
+    String[] universidad_report;
+    String[] id_usuario ;
 /** Metodo para preparar la lista que se mostrara en el listview */
     private void prepararListaReportes(String jsonReportes) {
 
@@ -92,11 +99,12 @@ public class ViewReports extends Fragment {
         try {
             JSONArray jsonArray = new JSONArray(jsonReportes);
 
-            final String[] contenido_report =  new String[jsonArray.length()];
-            final String[] imagen_report =  new String[jsonArray.length()];
-            final String[] latitud_report =  new String[jsonArray.length()];
-            final String[] longitud_report =  new String[jsonArray.length()];
-            final String[] universidad_report =  new String[jsonArray.length()];
+            contenido_report =  new String[jsonArray.length()];
+            imagen_report =  new String[jsonArray.length()];
+            latitud_report =  new String[jsonArray.length()];
+            longitud_report =  new String[jsonArray.length()];
+            universidad_report =  new String[jsonArray.length()];
+            id_usuario =  new String[jsonArray.length()];
 
             // Hacer el String[] para luego mostrarlo en un listView
             for(int i = 0; i < jsonArray.length(); i++) {
@@ -116,26 +124,30 @@ public class ViewReports extends Fragment {
                 String universidad_detail = jsonArray.getJSONObject(i).getString("longitud");
                 universidad_report[i] = universidad_detail;
 
+                String idusuario = jsonArray.getJSONObject(i).getJSONObject("autor").getString("nickname");
+                id_usuario[i] = idusuario;
+
             }
 
             ListView listReports = (ListView) getActivity().findViewById(R.id.listViewReports);
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
+            //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
 
+            ListaAdaptador arrayAdapter = new ListaAdaptador(this.getActivity(), id_usuario, contenido_report,imagen_report, this.myHandler);
             listReports.setAdapter(arrayAdapter);
 
             /** Se escucha el click de la lista y se muestra el detalle del reporte*/
             listReports.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+/*
                     String item = (String)parent.getItemAtPosition(position);
                     Bundle bundle = new Bundle();
 
-                    /** mensaje que muestra solo el contenido del reporte*/
+                    // mensaje que muestra solo el contenido del reporte
                     Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
 
-                    /** se captan los valores de los elementos del reporte seleccionado*/
+                    // se captan los valores de los elementos del reporte seleccionado
                     bundle.putString("contenido", contenido_report[position]);
                     bundle.putString("imagen", imagen_report[position]);
                     bundle.putString("latitud", latitud_report[position]);
@@ -143,7 +155,7 @@ public class ViewReports extends Fragment {
                     bundle.putString("idUniversidad", universidad_report[position]);
 
 
-                    /** se muestra el fragmento con el detalle del reporte*/
+                    // se muestra el fragmento con el detalle del reporte
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     ReportDetail reportsDetail = new ReportDetail();
 
@@ -152,7 +164,7 @@ public class ViewReports extends Fragment {
                     transaction.replace(R.id.reports_container, reportsDetail);
                     transaction.addToBackStack(null);
                     transaction.commit();
-
+                    */
                 }
             });
 
@@ -163,6 +175,42 @@ public class ViewReports extends Fragment {
 
 
     }
+
+    Handler myHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            int position = msg.what;
+            System.out.println("Posicion: " + position);
+
+            Bundle bundle = new Bundle();
+
+            /** mensaje que muestra solo el contenido del reporte*/
+            Toast.makeText(getActivity().getBaseContext(), contenido_report[position], Toast.LENGTH_LONG).show();
+
+            /** se captan los valores de los elementos del reporte seleccionado*/
+            bundle.putString("contenido", contenido_report[position]);
+            bundle.putString("imagen", imagen_report[position]);
+            bundle.putString("latitud", latitud_report[position]);
+            bundle.putString("longitud", longitud_report[position]);
+            //bundle.putString("idreporte", id_reporte[position]);
+            //bundle.putString("idusuario", id_usuario[position]);
+            //bundle.putString("fecha", fecha_reporte[position]);
+            bundle.putString("iduniversidad", universidad_report[position]);
+
+
+            /** se muestra el fragmento con el detalle del reporte*/
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            MyReportDetail myReportsDetail = new MyReportDetail();
+            bundle.putString("key", auth_token);
+            myReportsDetail.setArguments(bundle);
+            transaction.replace(R.id.reports_container, myReportsDetail);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
+        ;
+    };
 
 
 }

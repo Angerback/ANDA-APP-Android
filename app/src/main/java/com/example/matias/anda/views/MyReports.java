@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 
 import com.example.matias.anda.R;
 import com.example.matias.anda.controllers.HttpGet;
+import com.example.matias.anda.controllers.HttpPost;
 import com.example.matias.anda.utilities.JsonHandler;
+import com.example.matias.anda.utilities.SystemUtilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +77,15 @@ public class MyReports extends Fragment {
         }).execute(URL_GET, auth_token);
     }
 
+    String[] contenido_report ;
+    String[] imagen_report ;
+    String[] latitud_report;
+    String[] longitud_report ;
+    String[] universidad_report ;
+    String[] id_reporte ;
+    String[] id_usuario ;
+    String[] fecha_reporte;
+
     private void manejarMisReportes(String result) {
         try {
              JSONArray jsonArray1 = new JSONArray(result);
@@ -81,15 +94,15 @@ public class MyReports extends Fragment {
                 jsonArray.put(jsonArray1.get(i));
             }
 
-            final String[] contenido_report =  new String[jsonArray.length()];
-            final String[] imagen_report =  new String[jsonArray.length()];
-            final String[] latitud_report =  new String[jsonArray.length()];
-            final String[] longitud_report =  new String[jsonArray.length()];
-            final String[] universidad_report =  new String[jsonArray.length()];
-            final String[] id_reporte =  new String[jsonArray.length()];
-            final String[] id_usuario =  new String[jsonArray.length()];
-            final String[] fecha_reporte =  new String[jsonArray.length()];
 
+            contenido_report =  new String[jsonArray.length()];
+            imagen_report =  new String[jsonArray.length()];
+            latitud_report =  new String[jsonArray.length()];
+            longitud_report =  new String[jsonArray.length()];
+            universidad_report =  new String[jsonArray.length()];
+            id_reporte =  new String[jsonArray.length()];
+            id_usuario =  new String[jsonArray.length()];
+            fecha_reporte =  new String[jsonArray.length()];
 
 
 
@@ -116,7 +129,7 @@ public class MyReports extends Fragment {
                 String idreporte = jsonArray.getJSONObject(i).getString("idReporte");
                 id_reporte[i] = idreporte;
 
-                String idusuario = jsonArray.getJSONObject(i).getString("idUsuario");
+                String idusuario = jsonArray.getJSONObject(i).getJSONObject("autor").getString("nickname");
                 id_usuario[i] = idusuario;
 
                 String fechareporte = jsonArray.getJSONObject(i).getString("fecha");
@@ -129,10 +142,10 @@ public class MyReports extends Fragment {
 
             ListView listReports = (ListView) getActivity().findViewById(R.id.listViewMyReports);
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
+            //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, contenido_report);
 
             // adaptador especial, recibe el contexto, nombre universidad, contenido , imagen(URL)
-            //ListaAdaptador arrayAdapter = new ListaAdaptador(this.getActivity(), universidad_report, contenido_report,imagen_report);
+            ListaAdaptador arrayAdapter = new ListaAdaptador(this.getActivity(), id_usuario, contenido_report,imagen_report, this.myHandler);
 
             listReports.setAdapter(arrayAdapter);
 
@@ -140,14 +153,16 @@ public class MyReports extends Fragment {
             listReports.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    /*
+                    System.out.println("Entrando al listener");
 
-                    String item = (String)parent.getItemAtPosition(position);
+                    String item = (String) parent.getItemAtPosition(position);
                     Bundle bundle = new Bundle();
 
-                    /** mensaje que muestra solo el contenido del reporte*/
+                    // mensaje que muestra solo el contenido del reporte
                     Toast.makeText(getActivity().getBaseContext(), item, Toast.LENGTH_LONG).show();
 
-                    /** se captan los valores de los elementos del reporte seleccionado*/
+                    // se captan los valores de los elementos del reporte seleccionado
                     bundle.putString("contenido", contenido_report[position]);
                     bundle.putString("imagen", imagen_report[position]);
                     bundle.putString("latitud", latitud_report[position]);
@@ -158,9 +173,7 @@ public class MyReports extends Fragment {
                     bundle.putString("iduniversidad", universidad_report[position]);
 
 
-
-
-                    /** se muestra el fragmento con el detalle del reporte*/
+                    //se muestra el fragmento con el detalle del reporte
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     MyReportDetail myReportsDetail = new MyReportDetail();
                     bundle.putString("key", auth_token);
@@ -168,6 +181,8 @@ public class MyReports extends Fragment {
                     transaction.replace(R.id.reports_container, myReportsDetail);
                     transaction.addToBackStack(null);
                     transaction.commit();
+
+                    */
 
                 }
             });
@@ -178,4 +193,40 @@ public class MyReports extends Fragment {
 
 
     }
+
+    Handler myHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            int position = msg.what;
+            System.out.println("Posicion: " + position);
+
+            Bundle bundle = new Bundle();
+
+            /** mensaje que muestra solo el contenido del reporte*/
+            Toast.makeText(getActivity().getBaseContext(), contenido_report[position], Toast.LENGTH_LONG).show();
+
+            /** se captan los valores de los elementos del reporte seleccionado*/
+            bundle.putString("contenido", contenido_report[position]);
+            bundle.putString("imagen", imagen_report[position]);
+            bundle.putString("latitud", latitud_report[position]);
+            bundle.putString("longitud", longitud_report[position]);
+            bundle.putString("idreporte", id_reporte[position]);
+            bundle.putString("idusuario", id_usuario[position]);
+            bundle.putString("fecha", fecha_reporte[position]);
+            bundle.putString("iduniversidad", universidad_report[position]);
+
+
+            /** se muestra el fragmento con el detalle del reporte*/
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            MyReportDetail myReportsDetail = new MyReportDetail();
+            bundle.putString("key", auth_token);
+            myReportsDetail.setArguments(bundle);
+            transaction.replace(R.id.reports_container, myReportsDetail);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+
+        ;
+    };
 }
