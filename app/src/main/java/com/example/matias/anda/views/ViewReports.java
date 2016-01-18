@@ -201,7 +201,7 @@ public class ViewReports extends Fragment {
 
             /** se muestra el fragmento con el detalle del reporte*/
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            MyReportDetail myReportsDetail = new MyReportDetail();
+            ReportDetail myReportsDetail = new ReportDetail();
             bundle.putString("key", auth_token);
             myReportsDetail.setArguments(bundle);
             transaction.replace(R.id.reports_container, myReportsDetail);
